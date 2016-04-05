@@ -28,4 +28,4 @@ Kanava: #bibtexting
 Google Drive
 ------------
 Dokumentaatio ja Sprint Backlog
-https://drive.google.com/open?id=0B77redy3SinrZVNEdEc2NHRxd28
+https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
