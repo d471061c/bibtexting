@@ -23,4 +23,4 @@ Eero Ojala - eero.ojala@helsinki.fi
 IRC:
 ----
 
-#bibtexting
+Kanava: #bibtexting
