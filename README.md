@@ -6,7 +6,8 @@ Ryhmä bibtexting
 Dokumentointi aloitettu. Kts. Google Drive -linkki alempana. Laadin alustavan ideahahmotelman siitä miten ohjelma voisi toimia.
 
 
-Asiakastapaamisajat (luokassa C221????):
+Asiakastapaamisajat:
+--------------------
 
 15.4. klo 15:40
 
@@ -14,6 +15,7 @@ Asiakastapaamisajat (luokassa C221????):
 
 29.4. klo 15:40 
 
+Ilmeisesti luokassa C221.
 
 Osallistujat:
 -------------
