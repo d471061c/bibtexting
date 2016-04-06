@@ -27,5 +27,5 @@ Kanava: #bibtexting
 
 Google Drive
 ------------
-Dokumentaatio ja Sprint Backlog
+Dokumentaatio, Product Backlog ja Sprint Backlog
 https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
