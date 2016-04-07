@@ -28,6 +28,8 @@ Eero Ojala - eero.ojala@helsinki.fi
 
 Kalle Belmo - 
 
+Jussi Viinikka - jussi.viinikka@gmail.com
+
 IRC:
 ----
 
