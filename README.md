@@ -3,7 +3,9 @@
 Ryhmä bibtexting
 ================
 
-Dokumentointi aloitettu. Kts. Google Drive -linkki alempana. Laadin alustavan ideahahmotelman siitä miten ohjelma voisi toimia.
+Uutta:
+------
+Sprint Backlog on suurin piirtein feature-complete eli sinne voi nyt suoraan merkitä tuntikirjanpitoa taskeista. Kts. Google Drive -linkki alempana. Laadin dokumentaatio-tiedostoon alustavan ideahahmotelman siitä miten ohjelma voisi toimia.
 
 
 Asiakastapaamisajat:
