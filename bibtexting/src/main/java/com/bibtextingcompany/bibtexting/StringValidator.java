@@ -9,7 +9,7 @@ package com.bibtextingcompany.bibtexting;
  * As BibteX file can only be written in 7-bit ASCII (chars 0-127), BibteX strings need to be validated before
  * saving the actual BibteX reference. 
  */
-public class Validator {
+public class StringValidator {
     
     /**
      * This method is used to re-format Strings into 7-bit ASCII extended with BibteX special character codes.
