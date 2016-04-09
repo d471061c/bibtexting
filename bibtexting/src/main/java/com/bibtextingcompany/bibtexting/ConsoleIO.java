@@ -4,12 +4,14 @@ package com.bibtextingcompany.bibtexting;
 import java.util.Scanner;
 
 /**
- *
- * @author Eero
+ * Class which provides I/0 through the console
  */
 public class ConsoleIO implements IO{
     private final Scanner scanner;
 
+    /**
+     * Creates a new ConsoleIO object
+     */
     public ConsoleIO() {
         scanner = new Scanner(System.in);
     }
@@ -22,10 +24,5 @@ public class ConsoleIO implements IO{
     @Override
     public void print(String msg) {
         System.out.print(msg);
-    }
-
-    @Override
-    public void println(String msg) {
-        System.out.println(msg);
-    }     
+    } 
 }
