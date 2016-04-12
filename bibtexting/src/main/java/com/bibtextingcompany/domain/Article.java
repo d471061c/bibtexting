@@ -12,6 +12,17 @@ public class Article {
     private int number;
     private String pages;
 
+    /**
+     * 
+     * @param tag
+     * @param author
+     * @param title
+     * @param year
+     * @param journal
+     * @param volume
+     * @param numbers
+     * @param pages 
+     */
     public Article(String tag, String author, String title, int year, String journal, int volume, int numbers, String pages) {
         this.tag = tag;
         this.author = author;

@@ -91,6 +91,8 @@ public class DataValidator {
      */
     public static boolean ValidateRangeOfNumbers(String input) {
 
+        input = removeSpaces(input);
+        
         StringBuilder firstNumber = new StringBuilder();
         StringBuilder secondNumber = new StringBuilder();
         boolean rangeIndicatorFound = false;
@@ -176,4 +178,13 @@ public class DataValidator {
         return containsAlphabet;
     }
 
+    public static String removeSpaces(String input) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i<input.length(); i++) {
+            if (input.charAt(i)!=' ') {
+                sb.append(input.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
 }
