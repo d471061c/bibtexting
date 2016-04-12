@@ -39,3 +39,7 @@ Google Drive
 ------------
 Dokumentaatio, Product Backlog ja Sprint Backlog
 https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
+
+Userstories
+-----------
+https://github.com/d471061c/bibtexting/issues/2
