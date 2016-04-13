@@ -36,6 +36,8 @@ public class ReferenceDatabase {
      * @param article Article which is added to the database
      */
     public void add(Article article) {
+        // Put validation here
+        
         referencemap.put(article.getTag(), article);
     }
 

@@ -2,26 +2,21 @@ package com.bibtextingcompany.bibtexting;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 
-/*
- * SOON TO BE REMOVED
+/**
+ *
  */
-public class ConsoleUITest {
+public class StubIO implements IO {
 
-}
-
-class IOStub implements IO {
-
-    final String[] inputs;
+    private final String[] inputs;
     private int i;
-    List<String> outputs;
+    private final List<String> outputs;
 
-    public IOStub(String... inputs) {
+    public StubIO(String... inputs) {
         this.inputs = inputs;
         outputs = new ArrayList();
     }
+   
 
     @Override
     public void print(String msg) {
@@ -31,5 +26,10 @@ class IOStub implements IO {
     @Override
     public String readLine() {
         return inputs[i++];
+    }
+    
+    
+    public List<String> getPrints() {
+        return outputs;
     }
 }

@@ -67,7 +67,6 @@ public class Main {
         } 
     
 //        System.out.println(article);
-        
         ReferenceDatabase refDB = new ReferenceDatabase();
         refDB.add(article);
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
