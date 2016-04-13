@@ -5,32 +5,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-/**
- *
- * @author Eero
+/*
+ * SOON TO BE REMOVED
  */
 public class ConsoleUITest {
 
-    @Test
-    public void testExit() {
-        IOStub io = new IOStub("exit");
-        new ConsoleUI(io).run();
-        assertEquals("Goodbye!\n", io.outputs.get(6));
-    }
-    
-    @Test
-    public void testHelp() {
-        IOStub io = new IOStub("help", "exit");
-        new ConsoleUI(io).run();
-        assertEquals("Available commands:\n", io.outputs.get(6));
-    }
-    
-    @Test
-    public void testInvalidCommand() {
-        IOStub io = new IOStub("asdf", "exit");
-        new ConsoleUI(io).run();
-        assertEquals("Invalid command; type help for a list of commands\n", io.outputs.get(6));
-    }
 }
 
 class IOStub implements IO {

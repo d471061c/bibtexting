@@ -71,7 +71,7 @@ public class Main {
         ReferenceDatabase refDB = new ReferenceDatabase();
         refDB.add(article);
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
-        ui.run();
+        ui.run();   
     }
     
 }

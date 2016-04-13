@@ -68,16 +68,16 @@ public class ConsoleUI {
        io.print("TBD\n");
     }
 
+    // asks the user for a title and searches for a reference in the database with a matching title
     private void view() {
         io.print("Enter title: ");
-        String title = io.readLine();
-        StringValidator.Validate(title);
-        printResults(refDB.find(title.toLowerCase()));
+        String title = io.readLine();       
+        printResults(refDB.find(title));
     }
     
     private void printResults(List<Article> articles) {
         if (articles.isEmpty()) {
-            io.print("No references found with the specified title!\n");
+            io.print("No references found with the specified search terms!\n");
         }
         
         for (Article article : articles) {
