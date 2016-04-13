@@ -66,9 +66,11 @@ public class Main {
             article.setVolume(Integer.parseInt(volume));
         } 
     
-        System.out.println(article);
+//        System.out.println(article);
         
-        ConsoleUI ui = new ConsoleUI(new ConsoleIO());
+        ReferenceDatabase refDB = new ReferenceDatabase();
+        refDB.add(article);
+        ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
         ui.run();
     }
     
