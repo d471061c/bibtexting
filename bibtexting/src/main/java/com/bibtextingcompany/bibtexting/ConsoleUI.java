@@ -15,7 +15,8 @@ public class ConsoleUI {
      * Creates a new ConsoleUI object
      *
      * @param io I/O method used by the user interface.
-     * @param refDB A ReferenceDatabase Object where all the references are stored.
+     * @param refDB A ReferenceDatabase Object where all the references are
+     * stored.
      */
     public ConsoleUI(IO io, ReferenceDatabase refDB) {
         this.io = io;
@@ -63,23 +64,41 @@ public class ConsoleUI {
         }
         return false;
     }
-    
+
     private void add() {
-       io.print("TBD\n");
+        String[] args = new String[7];
+        io.print("author: ");
+        args[0] = io.readLine();
+        io.print("title: ");
+        args[1] = io.readLine();
+        io.print("year: ");
+        args[2] = io.readLine();
+        io.print("journal: ");
+        args[3] = io.readLine();
+        io.print("volume: ");
+        args[4] = io.readLine();
+        io.print("number: ");
+        args[5] = io.readLine();
+        io.print("pages: ");
+        args[6] = io.readLine();
+        Article article = new Article("A1", args[0], args[1], Integer.parseInt(args[2]), 
+                        args[3], Integer.parseInt(args[4]), Integer.parseInt(args[5]), args[6]);
+        this.refDB.add(article);
+        FileIO.appendToFile("articles.txt", "A1 " + args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " " + args[6] + "\n");
     }
 
     // asks the user for a title and searches for a reference in the database with a matching title
     private void view() {
         io.print("Enter title (use * to match partial string): ");
-        String title = io.readLine();       
+        String title = io.readLine();
         printResults(refDB.find(title));
     }
-    
+
     private void printResults(List<Article> articles) {
         if (articles.isEmpty()) {
             io.print("No references found with the specified search terms!\n");
         }
-        
+
         for (Article article : articles) {
             io.print(article.toString());
         }

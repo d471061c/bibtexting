@@ -20,18 +20,13 @@ public class ReferenceDatabase {
      */
     public ReferenceDatabase() {
         referencemap = new HashMap();
-        File articles = new File("articles.txt");
-        try {
-            Scanner scanner = new Scanner(articles);
-            while (scanner.hasNextLine()) {
-                String[] article = scanner.nextLine().split(" ");
-                this.add(new Article(article[0], article[1], article[2], Integer.parseInt(article[3]), 
-                        article[4], Integer.parseInt(article[5]), Integer.parseInt(article[6]), article[7]));
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        Scanner scanner = FileIO.readFile("articles.txt");
+        while (scanner.hasNextLine()) {
+            String[] article = scanner.nextLine().split(" ");
+            this.add(new Article(article[0], article[1], article[2], Integer.parseInt(article[3]),
+                    article[4], Integer.parseInt(article[5]), Integer.parseInt(article[6]), article[7]));
         }
-
+        scanner.close();
     }
 
     /**
