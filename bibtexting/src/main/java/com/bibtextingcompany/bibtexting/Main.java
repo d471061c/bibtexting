@@ -26,13 +26,13 @@ public class Main {
         Article article = new Article();
         
         if (DataValidator.Validate(tag, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setTag(tag);
+            article.setTag(StringValidator.Validate(tag));
         } else {
             article.setTag("Unknown");
         }
         
         if (DataValidator.Validate(title, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setTitle(title);
+            article.setTitle(StringValidator.Validate(title));
         } else {
             article.setTitle("Unknown Title");
         }
@@ -44,13 +44,14 @@ public class Main {
         }
         
         if (DataValidator.Validate(journal, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setJournal(journal);
+            article.setJournal(StringValidator.Validate(journal));
         } else {
             article.setJournal("Unknown Journal");
         }
         
-        if (DataValidator.Validate(pages, DataValidator.RANGE_OF_NUMBERS)==DataValidator.RANGE_OF_NUMBERS) {
-            article.setPages(pages);
+        if (DataValidator.Validate(StringValidator.Validate(pages), DataValidator.RANGE_OF_NUMBERS)==DataValidator.RANGE_OF_NUMBERS) {
+            pages=DataValidator.formatRangeOfNumbers(pages);
+            article.setPages(StringValidator.Validate(pages));
         } else if (DataValidator.Validate(pages, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
             article.setPages(pages);
         } else {article.setPages("Page Unknown");

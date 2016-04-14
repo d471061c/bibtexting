@@ -23,19 +23,21 @@ public class DataValidator {
     public static final int EMPTY_ALLOWED = 5;
     public static final int UNKNOWN = 5;
 
-
     /**
-     * Validates wether an input string passes as a certain datatype (int)
-     * The datatype codes are listed on @param datatype.
+     * Validates wether an input string passes as a certain datatype (int) The
+     * datatype codes are listed on @param datatype.
+     *
      * @param input user input string to be validated.
-     * @param datatype 1 = SINGLE_NUMBER, 2 = RANGE_OF_NUMBERS, 3 = TEXT, 4 = AUTHOR (not supported yet), 5 = EMPTY_ALLOWED
-     * @return Returns the same int as the @param datatype if the input was valid. Return of 0, -1, -2, -3 indicates an error.
+     * @param datatype 1 = SINGLE_NUMBER, 2 = RANGE_OF_NUMBERS, 3 = TEXT, 4 =
+     * AUTHOR (not supported yet), 5 = EMPTY_ALLOWED
+     * @return Returns the same int as the @param datatype if the input was
+     * valid. Return of 0, -1, -2, -3 indicates an error.
      */
     public static int Validate(String input, int datatype) {
-        if (datatype<SINGLE_NUMBER || datatype>EMPTY_ALLOWED) {
+        if (datatype < SINGLE_NUMBER || datatype > EMPTY_ALLOWED) {
             return ERROR_DATATYPE_UNRECOGNIZABLE;
         }
-        
+
         if (input == null) {
             if (datatype != EMPTY_ALLOWED) {
                 return ERROR_SYNTAX;
@@ -52,8 +54,6 @@ public class DataValidator {
             }
         }
 
-        
-        
         input = StringValidator.Validate(input);
 
         if (datatype == SINGLE_NUMBER) {
@@ -84,61 +84,64 @@ public class DataValidator {
     }
 
     /**
-     * Validates a string with a range of numbers (e.g. "52 - 64" or "2004-2005"). 
-     * If a range of TWO distinct numbers is not properly defined, the method will return FALSE.
+     * Validates a string with a range of numbers (e.g. "52 - 64" or
+     * "2004-2005"). If a range of TWO distinct numbers is not properly defined,
+     * the method will return FALSE.
+     *
      * @param input user string with two numbers separated with a '-'
      * @return TRUE if range of two numbers is found, FALSE if not.
      */
     public static boolean ValidateRangeOfNumbers(String input) {
 
         input = removeSpaces(input);
-        
+
         StringBuilder firstNumber = new StringBuilder();
         StringBuilder secondNumber = new StringBuilder();
         boolean rangeIndicatorFound = false;
-        int numberOfRanges=0;
+        int numberOfRanges = 0;
 
         for (int i = 0; i < input.length(); i++) {
             char current = input.charAt(i);
-            
-            if (current=='-') {
-                rangeIndicatorFound=true;
+
+            if (current == '-') {
+                rangeIndicatorFound = true;
                 numberOfRanges++;
             }
-            
-            if (numberOfRanges>2) {
+
+            if (numberOfRanges > 2) {
                 return false;
             }
 
             if (current >= '0' && current <= '9') {
 
-                if (rangeIndicatorFound && firstNumber.length()>0) {
+                if (rangeIndicatorFound && firstNumber.length() > 0) {
                     secondNumber.append(current);
                 } else if (!rangeIndicatorFound) {
                     firstNumber.append(current);
                 } else {
                     return false;
                 }
-            } else if ((current == '-') && (firstNumber.length() == 0 || (firstNumber.length()>0 && secondNumber.length()>0))) {
+            } else if ((current == '-') && (firstNumber.length() == 0 || (firstNumber.length() > 0 && secondNumber.length() > 0))) {
                 return false;
-            } else if (current =='.' && i<input.length()-1) {
+            } else if (current == '.' && i < input.length() - 1) {
                 return false;
-            } else if ((current <'0' || current >'9') && current!='-') {
+            } else if ((current < '0' || current > '9') && current != '-') {
                 return false;
             }
-            
+
         }
-        
-        if (firstNumber.length()>0 && secondNumber.length()>0 && rangeIndicatorFound) {
+
+        if (firstNumber.length() > 0 && secondNumber.length() > 0 && rangeIndicatorFound) {
             return true;
         } else {
             return false;
         }
-        
+
     }
 
     /**
      * Validates wether the input contains a single number
+     *
      * @param input user string containing a number
      * @return TRUE if a single number found, FALSE otherwise
      */
@@ -161,6 +164,7 @@ public class DataValidator {
 
     /**
      * Very simplistic validation for a user string containing text.
+     *
      * @param input user string containing alphabetical letters
      * @return TRUE if alphabet found, FALSE otherwise.
      */
@@ -178,10 +182,40 @@ public class DataValidator {
         return containsAlphabet;
     }
 
+    /**
+     * Removes all spaces from a string
+     *
+     * @param input user input
+     * @return Input with all spaces removed
+     */
     public static String removeSpaces(String input) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i<input.length(); i++) {
-            if (input.charAt(i)!=' ') {
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) != ' ') {
+                sb.append(input.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Once input of type "Range of Numbers" has been validated, this method can
+     * be used to properly format it.
+     *
+     * @param input user input with validated range of numbers
+     * @return reformated string with range of numbers
+     */
+    public static String formatRangeOfNumbers(String input) {
+        StringBuilder sb = new StringBuilder();
+        boolean midPointFound = false;
+
+        for (int i = 0; i < input.length(); i++) {
+            if (!midPointFound && input.charAt(i) == '-') {
+                sb.append("--");
+                midPointFound = true;
+            } else if (input.charAt(i) == '-' && midPointFound) {
+                // do nothing
+            } else if (input.charAt(i) != ' ') {
                 sb.append(input.charAt(i));
             }
         }

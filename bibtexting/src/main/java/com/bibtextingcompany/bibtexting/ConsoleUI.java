@@ -70,7 +70,7 @@ public class ConsoleUI {
 
     // asks the user for a title and searches for a reference in the database with a matching title
     private void view() {
-        io.print("Enter title: ");
+        io.print("Enter title (use * to match partial string): ");
         String title = io.readLine();       
         printResults(refDB.find(title));
     }

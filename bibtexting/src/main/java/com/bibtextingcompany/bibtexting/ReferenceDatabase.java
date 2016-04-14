@@ -43,6 +43,7 @@ public class ReferenceDatabase {
 
     /**
      * Returns a list of articles which have a title that matches the parameter
+     * You can also use star search to search for a partial match (e.g. > validating* )
      * given.
      *
      * @param title Name of the title.
@@ -50,14 +51,38 @@ public class ReferenceDatabase {
      */
     public List<Article> find(String title) {
         String searchTitle = trimAndLowercaseString(title);
+  
         searchTitle = StringValidator.Validate(searchTitle);
         List<Article> list = new ArrayList();
 
+        String starSearch = searchTitle;
+        
+        if (starSearch.contains("*")) {
+            StringBuilder sb = new StringBuilder("");
+            for (int i = 0; i<searchTitle.length(); i++) {
+                if (searchTitle.charAt(i)!='*') {
+                    sb.append(searchTitle.charAt(i));
+                } else if (searchTitle.charAt(i)=='*') {
+                    starSearch=sb.toString();
+                   break;
+                }
+            }
+        } else {
+            starSearch=null;
+        }
+        
+        
         for (Article article : referencemap.values()) {
             String articleTitle = trimAndLowercaseString(article.getTitle());
             if (articleTitle.equals(searchTitle)) {
                 list.add(article);
             }
+            else if (starSearch!=null) {
+                if (articleTitle.contains(starSearch)) {
+                    list.add(article);
+                }
+            }
+            
         }
         return list;
     }
