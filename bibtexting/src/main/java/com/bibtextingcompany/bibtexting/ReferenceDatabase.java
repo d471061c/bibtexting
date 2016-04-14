@@ -1,10 +1,12 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Article;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Encapsulates a HashMap containing all the references
@@ -18,6 +20,18 @@ public class ReferenceDatabase {
      */
     public ReferenceDatabase() {
         referencemap = new HashMap();
+        File articles = new File("articles.txt");
+        try {
+            Scanner scanner = new Scanner(articles);
+            while (scanner.hasNextLine()) {
+                String[] article = scanner.nextLine().split(" ");
+                this.add(new Article(article[0], article[1], article[2], Integer.parseInt(article[3]), 
+                        article[4], Integer.parseInt(article[5]), Integer.parseInt(article[6]), article[7]));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     /**
