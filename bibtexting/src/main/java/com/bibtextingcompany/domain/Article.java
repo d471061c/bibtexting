@@ -1,8 +1,10 @@
-
 package com.bibtextingcompany.domain;
 
-public class Article {
-    
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Article implements Serializable {
+
     private String tag;
     private String author;
     private String title;
@@ -13,7 +15,7 @@ public class Article {
     private String pages;
 
     /**
-     * 
+     *
      * @param tag
      * @param author
      * @param title
@@ -21,7 +23,7 @@ public class Article {
      * @param journal
      * @param volume
      * @param numbers
-     * @param pages 
+     * @param pages
      */
     public Article(String tag, String author, String title, int year, String journal, int volume, int numbers, String pages) {
         this.tag = tag;
@@ -35,9 +37,9 @@ public class Article {
     }
 
     public Article() {
-        
+
     }
-    
+
     public String getTag() {
         return tag;
     }
@@ -45,7 +47,7 @@ public class Article {
     public void setTag(String tag) {
         this.tag = tag;
     }
-    
+
     public String getAuthor() {
         return author;
     }
@@ -101,23 +103,64 @@ public class Article {
     public void setPages(String pages) {
         this.pages = pages;
     }
-    
+
     public void setPages(int start, int end) {
         this.pages = start + "--" + end;
     }
 
     @Override
     public String toString() {
-        return "@article{" + tag + ",\n" +
-                "    author  = \"" + author + "\",\n" +
-                "    title   = \"" + title + "\",\n" +
-                "    year    = \"" + year + "\",\n" +
-                "    journal = \"" + journal + "\",\n" +
-                "    volume  = \"" + volume + "\",\n" +
-                "    number  = \"" + number + "\",\n" +
-                "    pages   = \"" + pages + "\"\n" +
-                "}\n";
+        return "@article{" + tag + ",\n"
+                + "    author  = \"" + author + "\",\n"
+                + "    title   = \"" + title + "\",\n"
+                + "    year    = \"" + year + "\",\n"
+                + "    journal = \"" + journal + "\",\n"
+                + "    volume  = \"" + volume + "\",\n"
+                + "    number  = \"" + number + "\",\n"
+                + "    pages   = \"" + pages + "\"\n"
+                + "}\n";
     }
-    
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Article other = (Article) obj;
+        if (!Objects.equals(this.tag, other.tag)) {
+            return false;
+        }
+        if (!Objects.equals(this.author, other.author)) {
+            return false;
+        }
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (this.year != other.year) {
+            return false;
+        }
+        if (!Objects.equals(this.journal, other.journal)) {
+            return false;
+        }
+        if (this.volume != other.volume) {
+            return false;
+        }
+        if (this.number != other.number) {
+            return false;
+        }
+        if (!Objects.equals(this.pages, other.pages)) {
+            return false;
+        }
+        return true;
+    }
+
 }

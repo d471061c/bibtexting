@@ -84,7 +84,7 @@ public class ConsoleUI {
         Article article = new Article("A1", args[0], args[1], Integer.parseInt(args[2]), 
                         args[3], Integer.parseInt(args[4]), Integer.parseInt(args[5]), args[6]);
         this.refDB.add(article);
-        FileIO.appendToFile("articles.txt", "A1 " + args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " " + args[6] + "\n");
+        
     }
 
     // asks the user for a title and searches for a reference in the database with a matching title
