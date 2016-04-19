@@ -1,7 +1,6 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +27,7 @@ public class ReferenceDatabase {
     }
 
     private void loadDatabase() {
-        references = (ArrayList<Reference>) FileIO.loadFileIntoObject(references, "DATABASE");
+        references = (ArrayList<Reference>) FileIO.loadFileIntoObject(references, filename);
         if (references == null) {
             references = new ArrayList<>();;
         }
@@ -57,13 +56,13 @@ public class ReferenceDatabase {
     /**
      * Adds an Article Object to the database and the file associated with it
      *
-
+     * 
      */
     public void add(Reference reference) {
         reference.setTag(String.valueOf(this.numberOfEntries() + 1)); //should be some better algo
         if (!references.contains(reference)) {
             references.add(reference);
-            FileIO.saveObjectIntoFile(references, "DATABASE");
+            FileIO.saveObjectIntoFile(references, filename);
         }
         referencemap.put(reference.getTag(), reference);
     }
@@ -78,8 +77,6 @@ public class ReferenceDatabase {
      */
     public List<Reference> find(String title) {
         String searchTitle = trimAndLowercaseString(title);
-
-        searchTitle = StringValidator.Validate(searchTitle);
         List<Reference> list = new ArrayList();
 
         String starSearch = searchTitle;

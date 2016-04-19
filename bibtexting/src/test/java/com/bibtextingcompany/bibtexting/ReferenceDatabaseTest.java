@@ -40,12 +40,12 @@ public class ReferenceDatabaseTest {
 
     private Reference createArticle(String author, String title, int year, String journal, int volume) {
         Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
-        String[] params = new String[7];
-        params[0] = author;
-        params[1] = title;
-        params[2] = "" + year;
-        params[3] = journal;
-        params[4] = "" + volume;
+        String[] params = new String[24];
+        params[2] = author;
+        params[20] = title;
+        params[23] = "" + year;
+        params[10] = journal;
+        params[22] = "" + volume;
         reference.setParameters(params);
         return reference;
     }
@@ -58,7 +58,7 @@ public class ReferenceDatabaseTest {
     @Test
     public void testAdd() {
         refDB.add(articleToBeAdded);
-        assertEquals(articleToBeAdded, refDB.getReferencemap().get("a04"));
+        assertEquals(articleToBeAdded, refDB.getReferencemap().get("4"));
     }
 
     @Test
@@ -93,13 +93,6 @@ public class ReferenceDatabaseTest {
     public void testAddedArticleCanBeFoundByFind() {
         refDB.add(articleToBeAdded);
         assertEquals(articleToBeAdded, refDB.find("    BIBTEX AND YOU    ").get(0));
-    }
-
-    @Test
-    public void ifSameArticleIsAddedTwiceOnlyOneObjectInDatabase() {
-        refDB.add(articleToBeAdded);
-        refDB.add(articleToBeAdded);
-        assertEquals(1, refDB.find(" bibtex and you      ").size());
     }
 
     @Test

@@ -1,16 +1,15 @@
-
 package com.bibtextingcompany.bibtexting;
 
+import com.bibtextingcompany.domain.Reference;
+
 public class Main {
-    
+
     public static void main(String[] args) {
-        
+
 //        String testi = "Yölevi Äänekoski: Validating Strings in BibteX (1995)";
 //        System.out.println("Validoidaan string: "+testi);
 //        System.out.println("Tulos: "+Validator.Validate(testi));
-    
-    //  public Article(String tag, String author, String title, int year, String journal, int volume, int numbers, String pages) {
-  
+        //  public Article(String tag, String author, String title, int year, String journal, int volume, int numbers, String pages) {
         String tag = "a01";
         String author = "Yölevi Äänekoski";
         String title = "Validating Strings in BibteX";
@@ -20,7 +19,7 @@ public class Main {
         String number = "4";
         String pages = "15 - 25";
         String empty = "";
-        
+
 //        Article article = new Article();
 //        
 //        if (DataValidator.Validate(tag, DataValidator.TEXT)==DataValidator.TEXT) {
@@ -64,13 +63,24 @@ public class Main {
 //        if (DataValidator.Validate(volume, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
 //            article.setVolume(Integer.parseInt(volume));
 //        } 
-    
 //        System.out.println(article);
-
+//        Reference articleToBeAdded = createArticle("T. S. Garp", "BibteX and You", 2014, "Useless Proceedings in Computer Science", 6);
+//        String FILENAME = "DATABASE_TEST";
         ReferenceDatabase refDB = new ReferenceDatabase("DATABASE");
-        System.out.println(refDB.getReferencemap().keySet());
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
         ui.run();   
     }
     
+    private static Reference createArticle(String author, String title, int year, String journal, int volume) {
+        Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
+        String[] params = new String[24];
+        params[2] = author;
+        params[20] = title;
+        params[23] = "" + year;
+        params[10] = journal;
+        params[22] = "" + volume;
+        reference.setParameters(params);
+        return reference;
+    }
+
 }
