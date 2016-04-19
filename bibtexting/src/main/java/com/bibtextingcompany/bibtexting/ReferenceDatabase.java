@@ -1,6 +1,7 @@
 package com.bibtextingcompany.bibtexting;
 
-import com.bibtextingcompany.domain.Article;
+import com.bibtextingcompany.domain.Reference;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.Map;
  */
 public class ReferenceDatabase {
 
-    private Map<String, Article> referencemap;
-    private List<Article> articles;
     private final String filename;
+    private Map<String, Reference> referencemap;
+    private List<Reference> references;
 
     /**
      * Creates a new ReferenceDatabase Object
@@ -27,14 +28,17 @@ public class ReferenceDatabase {
     }
 
     private void loadDatabase() {
-        articles = (ArrayList<Article>) FileIO.loadFileIntoObject(articles, filename);
-        if (articles == null) {
-            articles = new ArrayList<>();;
+        references = (ArrayList<Reference>) FileIO.loadFileIntoObject(references, "DATABASE");
+        if (references == null) {
+            references = new ArrayList<>();;
         }
-        for (Article article : articles) {
-            this.add(article);
+        for (Reference reference : references) {
+            referencemap.put(reference.getTag(), reference);
         }
+    }
 
+    public int numberOfEntries() {
+        return references.size();
     }
 
     /**
@@ -44,7 +48,7 @@ public class ReferenceDatabase {
      * @param referencemap A Map Object with a String key and Article value
      * where the articles are stored.
      */
-    public ReferenceDatabase(String filename, Map<String, Article> referencemap) {
+    public ReferenceDatabase(String filename, Map<String, Reference> referencemap) {
         this.referencemap = referencemap;
         this.filename = filename;
         loadDatabase();
@@ -53,15 +57,15 @@ public class ReferenceDatabase {
     /**
      * Adds an Article Object to the database and the file associated with it
      *
-     * @param article Article which is added to the database
+
      */
-    public void add(Article article) {
-        // Put validation here
-        if (!articles.contains(article)) {
-            articles.add(article);
-            FileIO.saveObjectIntoFile(articles, filename);
+    public void add(Reference reference) {
+        reference.setTag(String.valueOf(this.numberOfEntries() + 1)); //should be some better algo
+        if (!references.contains(reference)) {
+            references.add(reference);
+            FileIO.saveObjectIntoFile(references, "DATABASE");
         }
-        referencemap.put(article.getTag(), article);
+        referencemap.put(reference.getTag(), reference);
     }
 
     /**
@@ -72,11 +76,11 @@ public class ReferenceDatabase {
      * @param title Name of the title.
      * @return A List of Articles with a specific title.
      */
-    public List<Article> find(String title) {
+    public List<Reference> find(String title) {
         String searchTitle = trimAndLowercaseString(title);
 
         searchTitle = StringValidator.Validate(searchTitle);
-        List<Article> list = new ArrayList();
+        List<Reference> list = new ArrayList();
 
         String starSearch = searchTitle;
 
@@ -94,13 +98,13 @@ public class ReferenceDatabase {
             starSearch = null;
         }
 
-        for (Article article : referencemap.values()) {
-            String articleTitle = trimAndLowercaseString(article.getTitle());
-            if (articleTitle.equals(searchTitle)) {
-                list.add(article);
+        for (Reference reference : referencemap.values()) {
+            String referenceTitle = trimAndLowercaseString(reference.getTitle());
+            if (referenceTitle.equals(searchTitle)) {
+                list.add(reference);
             } else if (starSearch != null) {
-                if (articleTitle.contains(starSearch)) {
-                    list.add(article);
+                if (referenceTitle.contains(starSearch)) {
+                    list.add(reference);
                 }
             }
 
@@ -119,7 +123,7 @@ public class ReferenceDatabase {
      *
      * @return Map where the articles are stored.
      */
-    public Map<String, Article> getReferencemap() {
+    public Map<String, Reference> getReferencemap() {
         return referencemap;
     }
 

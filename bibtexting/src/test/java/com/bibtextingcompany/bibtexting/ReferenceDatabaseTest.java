@@ -1,6 +1,6 @@
 package com.bibtextingcompany.bibtexting;
 
-import com.bibtextingcompany.domain.Article;
+import com.bibtextingcompany.domain.Reference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 public class ReferenceDatabaseTest {
 
     ReferenceDatabase refDB;
-    Article articleToBeAdded;
-    final static String filename = "DATABASE_TEST";
+    Reference articleToBeAdded;
+    final static String FILENAME = "DATABASE_TEST";
 
     public ReferenceDatabaseTest() {
-        articleToBeAdded = new Article("a04", "T. S. Garp", "BibteX and You", 2014, "Useless Proceedings in Computer Science", 6, 1, "16-19");
+        articleToBeAdded = createArticle("T. S. Garp", "BibteX and You", 2014, "Useless Proceedings in Computer Science", 6);
     }
 
     @BeforeClass
@@ -31,16 +31,23 @@ public class ReferenceDatabaseTest {
 
     @Before
     public void setUp() {
-        Map<String, Article> refMap = new HashMap();
-        refDB = new ReferenceDatabase(filename, refMap);
-        refDB.add(createArticle("a01", "Yölevi Äänekoski", "Validating Strings in BibteX", 1995, "Useless Proceedings in Computer Science", 3, 4, "15 - 25"));
-        refDB.add(createArticle("a02", "John and Jane Doe", "Validating Strings in BibteX", 2006, "The Computer Journal", 10, 2, "30 - 34"));
-        refDB.add(createArticle("a03", "Janne Keskinen", "Täällä Pohjantähden Alla", 1998, "The Journaali", 5, 4, "28-29"));
+        Map<String, Reference> refMap = new HashMap();
+        refDB = new ReferenceDatabase(FILENAME, refMap);
+        refDB.add(createArticle("Yölevi Äänekoski", "Validating Strings in BibteX", 1995, "Useless Proceedings in Computer Science", 3));
+        refDB.add(createArticle("John and Jane Doe", "Validating Strings in BibteX", 2006, "The Computer Journal", 10));
+        refDB.add(createArticle("Janne Keskinen", "Täällä Pohjantähden Alla", 1998, "The Journaali", 5));
     }
 
-    private Article createArticle(String tag, String author, String title, int year, String journal, int volume, int numbers, String pages) {
-        String validatedTitle = StringValidator.Validate(title);
-        return new Article(tag, author, validatedTitle, year, journal, volume, numbers, pages);
+    private Reference createArticle(String author, String title, int year, String journal, int volume) {
+        Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
+        String[] params = new String[7];
+        params[0] = author;
+        params[1] = title;
+        params[2] = "" + year;
+        params[3] = journal;
+        params[4] = "" + volume;
+        reference.setParameters(params);
+        return reference;
     }
 
     @After
@@ -57,13 +64,13 @@ public class ReferenceDatabaseTest {
     @Test
     public void testFindArticlesWithSameTitle() {
         boolean sameTitles = true;
-        List<Article> results = refDB.find("   validating strings in bibtex   ");
+        List<Reference> results = refDB.find("   validating strings in bibtex   ");
 
         if (results.isEmpty()) {
             sameTitles = false;
         } else {
-            for (Article article : results) {
-                if (!article.getTitle().equals("Validating Strings in BibteX")) {
+            for (Reference reference : results) {
+                if (!reference.getTitle().equals("Validating Strings in BibteX")) {
                     sameTitles = false;
                     break;
                 }
@@ -74,7 +81,7 @@ public class ReferenceDatabaseTest {
 
     @Test
     public void testFindArticleWithUnicodeTitle() {
-        assertEquals("a03", refDB.find("   täällä pohjantähden alla ").get(0).getTag());
+        assertEquals("3", refDB.find("   täällä pohjantähden alla ").get(0).getTag());
     }
 
     @Test
@@ -98,13 +105,13 @@ public class ReferenceDatabaseTest {
     @Test
     public void newDatabaseIsEmptyWithEmptyFile() {
         refDB.clearDatabase();
-        refDB = new ReferenceDatabase(filename);
+        refDB = new ReferenceDatabase(FILENAME);
         assertTrue(refDB.getReferencemap().isEmpty());
     }
 
     @Test
     public void onStartupFileContentsAreParsedIntoTheDatabase() {
-        refDB = new ReferenceDatabase(filename);
+        refDB = new ReferenceDatabase(FILENAME);
         assertEquals(3, refDB.getReferencemap().size());
     }
 }
