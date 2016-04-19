@@ -81,4 +81,21 @@ public final class FileIO {
         }
     }
 
+    /**
+     * Clears out the contents of a file with the given filename.
+     * 
+     * @param filename Name of the file which content will be cleared
+     */
+    public static void clearFile(String filename) {
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.reset();
+            fileOutputStream.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

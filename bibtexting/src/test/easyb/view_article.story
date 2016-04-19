@@ -5,7 +5,7 @@ description 'User can search (by title) and view a specific reference in the dat
 
 scenario "user can view a specific article with a matching title", {
     given 'command view selected', {
-        refDB = new ReferenceDatabase();
+        refDB = new ReferenceDatabase("DATABASE_TEST")
         refDB.add(new Article("a01", "John Doe", "The Future of BibteX", 2015, "The Computer Science Journal", 10, 2, "30-34"))
         refDB.add(new Article("a02", "Jane Doe", "BibteX and You", 2011, "Useless Proceedings in Computer Science", 5, 1, "12-17"))      
         io = new StubIO("view", "    the future of bibtex   ", "exit")
@@ -19,12 +19,13 @@ scenario "user can view a specific article with a matching title", {
     then 'a matching article is returned', {
         io.getPrints().shouldHave("The Future of BibteX")
         io.getPrints().shouldNotHave("BibteX and You")
+        refDB.clearDatabase()
     }
 }
 
 scenario "user can view multiple articles with the same title", {
     given 'command view selected', {
-        refDB = new ReferenceDatabase();
+        refDB = new ReferenceDatabase("DATABASE_TEST");
         refDB.add(new Article("a01", "John Doe", "The Future of BibteX", 2015, "The Computer Science Journal", 10, 2, "30-34"))
         refDB.add(new Article("a02", "Jane Doe", "The Future of BibteX", 2011, "Useless Proceedings in Computer Science", 5, 1, "12-17")) 
         io = new StubIO("view", "the future of bibtex", "exit")
@@ -38,12 +39,13 @@ scenario "user can view multiple articles with the same title", {
     then 'the matching articles are returned', {
         io.getPrints().shouldHave("John Doe")
         io.getPrints().shouldHave("Jane Doe")
+        refDB.clearDatabase()
     }
 }
 
 scenario "user can view an article which has unicode characters", {
     given 'command view selected', {
-        refDB = new ReferenceDatabase();
+        refDB = new ReferenceDatabase("DATABASE_TEST");
         refDB.add(new Article("a01", "John Doe", "The Future of BibteX", 2015, "The Computer Science Journal", 10, 2, "30-34"))
         title = StringValidator.Validate("Sinä ja BibteX")
         refDB.add(new Article("a02", "Janne Johnson", title, 2011, "Useless Proceedings in Computer Science", 5, 1, "12-17")) 
@@ -58,12 +60,13 @@ scenario "user can view an article which has unicode characters", {
     then 'a matching article is returned', {
         io.getPrints().shouldHave(title)
         io.getPrints().shouldNotHave("The Future of BibteX")
+        refDB.clearDatabase()
     }
 }
 
 scenario "if no article is found with a matching title then nothing is returned", {
     given 'command view selected', {
-        refDB = new ReferenceDatabase();
+        refDB = new ReferenceDatabase("DATABASE_TEST");
         refDB.add(new Article("a01", "John Doe", "The Future of BibteX", 2015, "The Computer Science Journal", 10, 2, "30-34"))
         io = new StubIO("view", "   bibtex and you   ", "exit")
         ui = new ConsoleUI(io, refDB)
@@ -75,5 +78,6 @@ scenario "if no article is found with a matching title then nothing is returned"
 
     then 'no articles are returned', {
         io.getPrints().shouldHave("No references found with the specified search terms!")
+        refDB.clearDatabase()
     }
 }

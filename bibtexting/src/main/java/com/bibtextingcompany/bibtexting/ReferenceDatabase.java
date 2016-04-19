@@ -1,12 +1,10 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Article;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Encapsulates a HashMap containing all the references
@@ -15,17 +13,21 @@ public class ReferenceDatabase {
 
     private Map<String, Article> referencemap;
     private List<Article> articles;
+    private final String filename;
 
     /**
      * Creates a new ReferenceDatabase Object
+     *
+     * @param filename Name of the file where references are stored
      */
-    public ReferenceDatabase() {
+    public ReferenceDatabase(String filename) {
         referencemap = new HashMap();
+        this.filename = filename;
         loadDatabase();
     }
 
     private void loadDatabase() {
-        articles = (ArrayList<Article>) FileIO.loadFileIntoObject(articles, "DATABASE");
+        articles = (ArrayList<Article>) FileIO.loadFileIntoObject(articles, filename);
         if (articles == null) {
             articles = new ArrayList<>();;
         }
@@ -38,15 +40,18 @@ public class ReferenceDatabase {
     /**
      * Creates a new ReferenceDatabase Object
      *
+     * @param filename Name of the file where the refenences are stored.
      * @param referencemap A Map Object with a String key and Article value
      * where the articles are stored.
      */
-    public ReferenceDatabase(Map<String, Article> referencemap) {
+    public ReferenceDatabase(String filename, Map<String, Article> referencemap) {
         this.referencemap = referencemap;
+        this.filename = filename;
+        loadDatabase();
     }
 
     /**
-     * Adds an Article Object to the database
+     * Adds an Article Object to the database and the file associated with it
      *
      * @param article Article which is added to the database
      */
@@ -54,7 +59,7 @@ public class ReferenceDatabase {
         // Put validation here
         if (!articles.contains(article)) {
             articles.add(article);
-            FileIO.saveObjectIntoFile(articles, "DATABASE");
+            FileIO.saveObjectIntoFile(articles, filename);
         }
         referencemap.put(article.getTag(), article);
     }
@@ -118,13 +123,9 @@ public class ReferenceDatabase {
         return referencemap;
     }
 
-    /**
-     * Sets the Map where the articles are stored.
-     *
-     * @param referencemap Map where the articles are stored.
-     */
-    public void setReferencemap(Map<String, Article> referencemap) {
-        this.referencemap = referencemap;
+    public void clearDatabase() {
+        this.referencemap = new HashMap();
+        FileIO.clearFile(filename);
     }
 
 }
