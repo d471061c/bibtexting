@@ -1,13 +1,14 @@
 package com.bibtextingcompany.bibtexting;
 
-import com.bibtextingcompany.domain.Article;
+import com.bibtextingcompany.domain.Reference.ReferenceType;
+import com.bibtextingcompany.domain.Reference;
 import java.util.List;
 
 /**
  * A command line based user interface.
  */
 public class ConsoleUI {
-
+    
     private final IO io;
     private final ReferenceDatabase refDB;
 
@@ -28,7 +29,7 @@ public class ConsoleUI {
      */
     public void run() {
         help();
-
+        
         while (true) {
             io.print("\n");
             io.print("> ");
@@ -38,14 +39,14 @@ public class ConsoleUI {
             }
         }
     }
-
+    
     private void help() {
         io.print("Available commands:\n");
         io.print("add\n");
         io.print("exit\n");
         io.print("help\n");
         io.print("view\n");
-
+        
     }
 
     // Returns true if the user wishes to end program execution, false otherwise.
@@ -58,33 +59,50 @@ public class ConsoleUI {
         } else if (command.equals("help")) {
             help();
         } else if (command.equals("add")) {
-            add();
+            viewTypes();
+            String subcommand = io.readLine();
+            if (subcommand.equals("back")) {
+                help();
+            } else if (!validType(subcommand)) {
+                processCommand("add");
+            } else {
+                ReferenceType type = ReferenceType.values()[Integer.parseInt(subcommand) - 1];
+                add(type);
+            }
         } else {
             io.print("Invalid command; type help for a list of commands\n");
         }
         return false;
     }
-
-    private void add() {
-        String[] args = new String[7];
-        io.print("author: ");
-        args[0] = io.readLine();
-        io.print("title: ");
-        args[1] = io.readLine();
-        io.print("year: ");
-        args[2] = io.readLine();
-        io.print("journal: ");
-        args[3] = io.readLine();
-        io.print("volume: ");
-        args[4] = io.readLine();
-        io.print("number: ");
-        args[5] = io.readLine();
-        io.print("pages: ");
-        args[6] = io.readLine();
-        Article article = new Article("A1", args[0], args[1], Integer.parseInt(args[2]), 
-                        args[3], Integer.parseInt(args[4]), Integer.parseInt(args[5]), args[6]);
-        this.refDB.add(article);
-        
+    
+    private boolean validType(String subcommand) {
+        int typeNumber = 0;
+        try {
+            typeNumber = Integer.parseInt(subcommand);
+        } catch (Exception e) {
+            return false;
+        }
+        return typeNumber >= 1 && typeNumber <= ReferenceType.values().length;
+    }
+    
+    private void viewTypes() {
+        io.print("enter type number or back to return to main menu\n");
+        ReferenceType[] types = ReferenceType.values();
+        for (int i = 0; i < types.length; i++) {
+            io.print(i + 1 + ": " + types[i].toString().toLowerCase() + "\n");
+        }
+        io.print("\n> ");
+    }
+    
+    private void add(ReferenceType type) {
+        String[] args = new String[24];
+        Reference reference = new Reference(type);
+        for (int i = 0; i < reference.requiredParameters().length; i++) {
+            io.print(reference.paramNames[reference.requiredParameters()[i]] + ": ");
+            args[reference.requiredParameters()[i]] = io.readLine();
+        }
+        reference.setParameters(args);
+        this.refDB.add(reference);
     }
 
     // asks the user for a title and searches for a reference in the database with a matching title
@@ -93,15 +111,15 @@ public class ConsoleUI {
         String title = io.readLine();
         printResults(refDB.find(title));
     }
-
-    private void printResults(List<Article> articles) {
-        if (articles.isEmpty()) {
+    
+    private void printResults(List<Reference> references) {
+        if (references.isEmpty()) {
             io.print("No references found with the specified search terms!\n");
         }
-
-        for (Article article : articles) {
-            io.print(article.toString());
+        
+        for (Reference reference : references) {
+            io.print(reference.toString());
         }
     }
-
+    
 }

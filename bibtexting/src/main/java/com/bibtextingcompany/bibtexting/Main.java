@@ -1,8 +1,6 @@
 
 package com.bibtextingcompany.bibtexting;
 
-import com.bibtextingcompany.domain.Article;
-
 public class Main {
     
     public static void main(String[] args) {
@@ -23,53 +21,53 @@ public class Main {
         String pages = "15 - 25";
         String empty = "";
         
-        Article article = new Article();
-        
-        if (DataValidator.Validate(tag, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setTag(StringValidator.Validate(tag));
-        } else {
-            article.setTag("Unknown");
-        }
-        
-        if (DataValidator.Validate(title, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setTitle(StringValidator.Validate(title));
-        } else {
-            article.setTitle("Unknown Title");
-        }
-        
-        if (DataValidator.Validate(author, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setAuthor(StringValidator.Validate(author));
-        } else {
-            article.setAuthor("Unknown Author");
-        }
-        
-        if (DataValidator.Validate(journal, DataValidator.TEXT)==DataValidator.TEXT) {
-            article.setJournal(StringValidator.Validate(journal));
-        } else {
-            article.setJournal("Unknown Journal");
-        }
-        
-        if (DataValidator.Validate(StringValidator.Validate(pages), DataValidator.RANGE_OF_NUMBERS)==DataValidator.RANGE_OF_NUMBERS) {
-            pages=DataValidator.formatRangeOfNumbers(pages);
-            article.setPages(StringValidator.Validate(pages));
-        } else if (DataValidator.Validate(pages, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
-            article.setPages(pages);
-        } else {article.setPages("Page Unknown");
-        }
-        
-        if (DataValidator.Validate(year, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
-            article.setYear(Integer.parseInt(year));
-        }
-        if (DataValidator.Validate(number, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
-            article.setNumber(Integer.parseInt(number));
-        }
-        if (DataValidator.Validate(volume, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
-            article.setVolume(Integer.parseInt(volume));
-        } 
+//        Article article = new Article();
+//        
+//        if (DataValidator.Validate(tag, DataValidator.TEXT)==DataValidator.TEXT) {
+//            article.setTag(StringValidator.Validate(tag));
+//        } else {
+//            article.setTag("Unknown");
+//        }
+//        
+//        if (DataValidator.Validate(title, DataValidator.TEXT)==DataValidator.TEXT) {
+//            article.setTitle(StringValidator.Validate(title));
+//        } else {
+//            article.setTitle("Unknown Title");
+//        }
+//        
+//        if (DataValidator.Validate(author, DataValidator.TEXT)==DataValidator.TEXT) {
+//            article.setAuthor(StringValidator.Validate(author));
+//        } else {
+//            article.setAuthor("Unknown Author");
+//        }
+//        
+//        if (DataValidator.Validate(journal, DataValidator.TEXT)==DataValidator.TEXT) {
+//            article.setJournal(StringValidator.Validate(journal));
+//        } else {
+//            article.setJournal("Unknown Journal");
+//        }
+//        
+//        if (DataValidator.Validate(StringValidator.Validate(pages), DataValidator.RANGE_OF_NUMBERS)==DataValidator.RANGE_OF_NUMBERS) {
+//            pages=DataValidator.formatRangeOfNumbers(pages);
+//            article.setPages(StringValidator.Validate(pages));
+//        } else if (DataValidator.Validate(pages, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
+//            article.setPages(pages);
+//        } else {article.setPages("Page Unknown");
+//        }
+//        
+//        if (DataValidator.Validate(year, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
+//            article.setYear(Integer.parseInt(year));
+//        }
+//        if (DataValidator.Validate(number, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
+//            article.setNumber(Integer.parseInt(number));
+//        }
+//        if (DataValidator.Validate(volume, DataValidator.SINGLE_NUMBER)==DataValidator.SINGLE_NUMBER) {
+//            article.setVolume(Integer.parseInt(volume));
+//        } 
     
 //        System.out.println(article);
         ReferenceDatabase refDB = new ReferenceDatabase();
-        refDB.add(article);
+        //refDB.add(article);
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
         ui.run();   
     }
