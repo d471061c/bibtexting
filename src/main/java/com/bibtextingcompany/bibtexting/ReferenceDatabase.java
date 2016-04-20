@@ -86,7 +86,7 @@ public class ReferenceDatabase {
             for (int i = 0; i < searchTitle.length(); i++) {
                 if (searchTitle.charAt(i) != '*') {
                     sb.append(searchTitle.charAt(i));
-                } else if (searchTitle.charAt(i) == '*') {
+                } else {
                     starSearch = sb.toString();
                     break;
                 }
