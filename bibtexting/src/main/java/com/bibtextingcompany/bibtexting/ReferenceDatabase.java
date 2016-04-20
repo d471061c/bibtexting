@@ -29,7 +29,7 @@ public class ReferenceDatabase {
     private void loadDatabase() {
         references = (ArrayList<Reference>) FileIO.loadFileIntoObject(references, filename);
         if (references == null) {
-            references = new ArrayList<>();;
+            references = new ArrayList();
         }
         for (Reference reference : references) {
             referencemap.put(reference.getTag(), reference);
