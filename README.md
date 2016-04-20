@@ -1,4 +1,6 @@
 
+image:https://travis-ci.org/d471061c/bibtexting.svg?branch=master["Build Status", link="https://travis-ci.org/d471061c/bibtexting"]
+
 ----------------
 Ryhmä bibtexting
 ================
