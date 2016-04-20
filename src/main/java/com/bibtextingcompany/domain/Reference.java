@@ -82,6 +82,7 @@ public class Reference implements Serializable {
 
     public Reference(ReferenceType referenceType) {
         this.referenceType = referenceType;
+        this.placeholderize();
     }
 
     public int[] requiredParameters() {
@@ -203,6 +204,47 @@ public class Reference implements Serializable {
         }
     }
 
+    /**
+     * Creates placeholder data set for the reference.
+     * This is to prevent any non-functional (crash-prone) references being created.
+     */
+    public void placeholderize() {
+        String[] params = new String[24];
+        int[] required;
+        int[] optional;
+        required = this.requiredParameters();
+        optional = this.optionalParameters();
+         
+        
+        for (int i = 0; i<required.length; i++) {
+            
+                params[required[i]]="Placeholder";
+                
+            if (required[i]==4 || required[i] == 12 || required[i] == 14 || required[i] == 22 || required[i] == 23) {
+                params[required[i]]="10";
+            }
+            if (required[i]==16) {
+                params[required[i]]="15--25";
+            }
+        }
+        
+         for (int i = 0; i<optional.length; i++) {
+                params[optional[i]]="Placeholder";
+                
+            if (optional[i]==4 || optional[i] == 12 || optional[i] == 14 || optional[i] == 22 || optional[i] == 23) {
+                params[optional[i]]="10";
+            }
+            if (optional[i]==16) {
+                params[optional[i]]="15--25";
+            }
+        }
+        
+        
+        this.setParameters(params);
+        
+        this.setTag("placeholder_tag");
+    }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -370,4 +412,6 @@ public class Reference implements Serializable {
         return true;
     }
 
+    
+    
 }
