@@ -7,7 +7,9 @@ Ryhmä bibtexting
 Koodilinkit:
 ------------
 Main: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/bibtexting
+
 Domain: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/domain
+
 Testit: https://github.com/d471061c/bibtexting/tree/master/src/test
 
 
