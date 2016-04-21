@@ -28,8 +28,9 @@ public class StringValidator {
         if (input.length()<1) {
             return "<empty>";
         }
-        
+    //    System.out.println("Starting to validate String: "+input);
         StringBuilder sb = new StringBuilder();
+        
         
         // Information about the special symbol codes can be found at:
         // http://www.bibtex.org/SpecialSymbols/
@@ -43,7 +44,7 @@ public class StringValidator {
             
             if (input.charAt(i)<=127) {
                 sb.append(input.charAt(i));
-            } else if (input.charAt(i)=='Ä' || input.charAt(i)=='ä') {      // As far as I can tell there is no code for a capital 'Ä' or 'Ö'
+            } else if (input.charAt(i)=='Ä' || input.charAt(i)=='ä' || input.charAt(i)=='ã') {      // As far as I can tell there is no code for a capital 'Ä' or 'Ö'
                 sb.append("\\\"{a}");
             } else if (input.charAt(i)=='Ö' || input.charAt(i)=='ö') {
                 sb.append("\\\"{o}");
@@ -55,7 +56,7 @@ public class StringValidator {
                 sb.append("<?>");                                             // '<?>' is mostly for debugging. In the final product invalid chars might be stored as spaces...?
             }
         }
-        
+     //   System.out.println("--> "+sb);
         return sb.toString();
     }
     

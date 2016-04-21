@@ -1,5 +1,6 @@
 import com.bibtextingcompany.bibtexting.*
 import com.bibtextingcompany.domain.Reference
+import com.bibtextingcompany.util.WordUTF8
 
 description 'User can search (by title) and view a specific reference in the database'
 
@@ -47,8 +48,8 @@ scenario "user can view an reference which has unicode characters", {
     given 'command view selected', {
         refDB = new ReferenceDatabase("DATABASE_TEST");
         refDB.add(ReferenceCreator.createArticle("John Doe", "The Future of BibteX", "2015", "The Computer Science Journal", "10"))
-        refDB.add(ReferenceCreator.createInproceedings("Janne Johnson", "Sinä ja BibteX", "booktitle", "1995")) 
-        io = new StubIO("view", "   sinä ja bibtex   ", "exit")
+        refDB.add(ReferenceCreator.createInproceedings("Janne Johnson", WordUTF8.getSina()+" ja BibteX", "booktitle", "1995")) 
+        io = new StubIO("view", "   "+WordUTF8.getSina()+" ja bibtex   ", "exit")
         ui = new ConsoleUI(io, refDB)
     }
 
@@ -57,7 +58,7 @@ scenario "user can view an reference which has unicode characters", {
     }
 
     then 'a matching reference is returned', {
-        io.getPrints().shouldHave("Sinä ja BibteX")
+        io.getPrints().shouldHave("Sin\\\"{a} ja BibteX")
         io.getPrints().shouldNotHave("The Future of BibteX")
         refDB.clearDatabase()
     }

@@ -76,9 +76,10 @@ public class ReferenceDatabase {
      * @return A List of Articles with a specific title.
      */
     public List<Reference> find(String title) {
+        
         String searchTitle = trimAndLowercaseString(title);
         List<Reference> list = new ArrayList();
-
+       // System.out.println("search title: "+searchTitle);
         String starSearch = searchTitle;
 
         if (starSearch.contains("*")) {
@@ -94,8 +95,9 @@ public class ReferenceDatabase {
         } else {
             starSearch = null;
         }
-
+      //  System.out.println("find: "+searchTitle);
         for (Reference reference : referencemap.values()) {
+        //    System.out.println("Ref: "+reference.getTitle());
             String referenceTitle = trimAndLowercaseString(reference.getTitle());
             if (referenceTitle.equals(searchTitle)) {
                 list.add(reference);
@@ -112,6 +114,12 @@ public class ReferenceDatabase {
     private String trimAndLowercaseString(String string) {
         String trimmed = string.trim();
         String lowercased = trimmed.toLowerCase();
+        
+//        StringBuilder sb = new StringBuilder(lowercased);
+        lowercased=lowercased.replace("ä", "\\\"{a}");
+        lowercased=lowercased.replace("ö", "\\\"{o}");
+        lowercased=lowercased.replace("å", "\\aa");
+        
         return lowercased;
     }
 

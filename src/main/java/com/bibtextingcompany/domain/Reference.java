@@ -1,5 +1,6 @@
 package com.bibtextingcompany.domain;
 
+import com.bibtextingcompany.bibtexting.ParameterPolice;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -84,6 +85,7 @@ public class Reference implements Serializable {
     public Reference(ReferenceType referenceType) {
         this.referenceType = referenceType;
         this.placeholderize();
+        System.out.println(toString());
     }
 
     public int[] requiredParameters() {
@@ -118,7 +120,16 @@ public class Reference implements Serializable {
         return optional;
     }
 
-    public void setParameters(String[] params) {
+    /**
+     * Sets new parameters for a reference. Runs a parsing AND cleaning for the inputs first.
+     * @param params new set of Params
+     * @return returns params WITH error messages. The error messages can be used to advice the user.
+     */
+    public String[] setParameters(String[] params) {
+        
+        String[] processedParamsWithErrors = ParameterPolice.process(params);
+        params = ParameterPolice.clean(processedParamsWithErrors);
+        
         for (int param = 0; param < params.length; param++) {
             switch (param) {
                 case 0:
@@ -215,6 +226,8 @@ public class Reference implements Serializable {
                     break;
             }
         }
+        
+        return processedParamsWithErrors;
     }
 
     /**

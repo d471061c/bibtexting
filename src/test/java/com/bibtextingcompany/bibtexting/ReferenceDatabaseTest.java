@@ -69,7 +69,7 @@ public class ReferenceDatabaseTest {
 
     @Test
     public void testFindArticleWithUnicodeTitle() {
-        assertEquals("Täällä Pohjantähden Alla", refDB.find("   täällä pohjantähden alla ").get(0).getTitle());
+        assertEquals("T\\\"{a}\\\"{a}ll\\\"{a} Pohjant\\\"{a}hden Alla", refDB.find("   t\\\"{a}\\\"{a}ll\\\"{a} pohjant\\\"{a}hden alla ").get(0).getTitle());
     }
 
     @Test
