@@ -4,9 +4,11 @@
 Ryhmä bibtexting
 ================
 
-Uutta:
-------
-Sprint Backlog on suurin piirtein feature-complete eli sinne voi nyt suoraan merkitä tuntikirjanpitoa taskeista. Kts. Google Drive -linkki alempana. Laadin dokumentaatio-tiedostoon alustavan ideahahmotelman siitä miten ohjelma voisi toimia.
+Koodilinkit:
+------------
+Main: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/bibtexting
+Domain: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/domain
+Testit: https://github.com/d471061c/bibtexting/tree/master/src/test
 
 
 Asiakastapaamisajat:
