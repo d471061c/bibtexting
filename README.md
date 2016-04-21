@@ -10,6 +10,8 @@ Main: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibte
 
 Domain: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/domain
 
+Util: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/util
+
 Testit: https://github.com/d471061c/bibtexting/tree/master/src/test
 
 
