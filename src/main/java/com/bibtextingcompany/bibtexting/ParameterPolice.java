@@ -3,10 +3,16 @@ package com.bibtextingcompany.bibtexting;
 import com.bibtextingcompany.util.Numeric;
 
 /**
- *
+ * ParameterPolice enforces BibteX friendly parsing of reference parameters.
  */
 public class ParameterPolice {
     
+    /**
+     * Process checks the general validity each and every parameter being inserted into a reference.
+     * Illegal parameters are replaced with error codes.
+     * @param params parameters being inserted
+     * @return properly parsed parameters with error codes (if any)
+     */
     public static String[] process(String[] params) {
         for (int param = 0; param < params.length; param++) {
             String pm = params[param];
@@ -222,6 +228,11 @@ public class ParameterPolice {
         return params;
     }
  
+    /**
+     * Use this method to clean out any error codes left in the parameter array. Any error codes will get replaced with NULL.
+     * @param params parameters with error codes (if any)
+     * @return parameters with error codes removed 
+     */
     public static String[] clean(String[] params) {
         for (int i = 0; i<params.length; i++) {
             String pm = params[i];
