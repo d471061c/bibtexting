@@ -18,7 +18,7 @@ public class ReferenceDatabaseTest {
     final static String FILENAME = "DATABASE_TEST";
 
     public ReferenceDatabaseTest() {
-        articleToBeAdded = ReferenceCreator.createArticle("T. S. Garp", "BibteX and You", 2014, "Useless Proceedings in Computer Science", 6);
+        articleToBeAdded = ReferenceCreator.createArticle("T. S. Garp", "BibteX and You", "2014", "Useless Proceedings in Computer Science", "6");
     }
 
     @BeforeClass
@@ -33,9 +33,9 @@ public class ReferenceDatabaseTest {
     public void setUp() {
         Map<String, Reference> refMap = new HashMap();
         refDB = new ReferenceDatabase(FILENAME, refMap);
-        refDB.add(ReferenceCreator.createArticle("Yölevi Äänekoski", "Validating Strings in BibteX", 1995, "Useless Proceedings in Computer Science", 3));
-        refDB.add(ReferenceCreator.createArticle("John and Jane Doe", "Validating Strings in BibteX", 2006, "The Computer Journal", 10));
-        refDB.add(ReferenceCreator.createArticle("Janne Keskinen", "Täällä Pohjantähden Alla", 1998, "The Journaali", 5));
+        refDB.add(ReferenceCreator.createArticle("Yölevi Äänekoski", "Validating Strings in BibteX", "1995", "Useless Proceedings in Computer Science", "3"));
+        refDB.add(ReferenceCreator.createBook("John and Jane Doe", "Editor123" , "Validating Strings in BibteX", "Tammi", "1993"));
+        refDB.add(ReferenceCreator.createInproceedings("Janne Keskinen", "Täällä Pohjantähden Alla", "Booktitle123", "2005"));
     }
 
     @After
@@ -69,7 +69,7 @@ public class ReferenceDatabaseTest {
 
     @Test
     public void testFindArticleWithUnicodeTitle() {
-        assertEquals("3", refDB.find("   täällä pohjantähden alla ").get(0).getTag());
+        assertEquals("Täällä Pohjantähden Alla", refDB.find("   täällä pohjantähden alla ").get(0).getTitle());
     }
 
     @Test
