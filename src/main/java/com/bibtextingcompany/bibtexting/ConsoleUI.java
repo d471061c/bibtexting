@@ -102,8 +102,9 @@ public class ConsoleUI {
         if (validateParameters(params)) {
             reference.setParameters(params);
             refDB.add(reference);
+            io.print("Success: Reference added.\n");
         } else {
-            io.print("Error: one or more paramters were invalid. Reference not saved");
+            io.print("Error: one or more paramters were invalid. Reference was not saved.\n");
         }
     }
 
