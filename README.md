@@ -4,6 +4,14 @@
 Ryhmä bibtexting
 ================
 
+Sprint Backlog Week 2:
+----------------------
+https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
+
+Product Backlog
+---------------
+https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
+
 Koodilinkit:
 ------------
 Main: https://github.com/d471061c/bibtexting/tree/master/src/main/java/com/bibtextingcompany/bibtexting
