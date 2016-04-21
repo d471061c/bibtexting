@@ -3,6 +3,7 @@ package com.bibtextingcompany.domain;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
+import com.bibtextingcompany.util.Numeric;
 
 public class Reference implements Serializable {
 
@@ -164,7 +165,11 @@ public class Reference implements Serializable {
                     break;
                 case 14:
                     if (params[param] != null) {
+                        if (Numeric.confirmInteger(params[param])) {
                         this.number = Integer.parseInt(params[param]);
+                        } else {
+                        this.number = 666;    
+                        }
                     }
                     break;
                 case 15:
@@ -190,12 +195,20 @@ public class Reference implements Serializable {
                     break;
                 case 22:
                     if (params[param] != null) {
+                        if (Numeric.confirmInteger(params[param])) {
                         this.volume = Integer.parseInt(params[param]);
+                        } else {
+                        this.volume = 666;    
+                        }
                     }
                     break;
                 case 23:
                     if (params[param] != null) {
+                        if (Numeric.confirmInteger(params[param])) {
                         this.year = Integer.parseInt(params[param]);
+                        } else {
+                        this.year = 666;    
+                        }
                     }
                     break;
                 default:
