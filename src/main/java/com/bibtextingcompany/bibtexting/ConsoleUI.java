@@ -8,7 +8,7 @@ import java.util.List;
  * A command line based user interface.
  */
 public class ConsoleUI {
-    
+
     private final IO io;
     private final ReferenceDatabase refDB;
 
@@ -29,7 +29,7 @@ public class ConsoleUI {
      */
     public void run() {
         help();
-        
+
         while (true) {
             io.print("\n");
             io.print("> ");
@@ -39,14 +39,14 @@ public class ConsoleUI {
             }
         }
     }
-    
+
     private void help() {
         io.print("Available commands:\n");
         io.print("add\n");
         io.print("exit\n");
         io.print("help\n");
         io.print("view\n");
-        
+
     }
 
     // Returns true if the user wishes to end program execution, false otherwise.
@@ -74,7 +74,7 @@ public class ConsoleUI {
         }
         return false;
     }
-    
+
     private boolean validType(String subcommand) {
         int typeNumber = 0;
         try {
@@ -84,7 +84,7 @@ public class ConsoleUI {
         }
         return typeNumber >= 1 && typeNumber <= ReferenceType.values().length;
     }
-    
+
     private void viewTypes() {
         io.print("enter type number or back to return to main menu\n");
         ReferenceType[] types = ReferenceType.values();
@@ -93,16 +93,87 @@ public class ConsoleUI {
         }
         io.print("\n> ");
     }
-    
+
     private void add(ReferenceType type) {
-        String[] args = new String[24];
         Reference reference = new Reference(type);
-        for (int i = 0; i < reference.requiredParameters().length; i++) {
-            io.print(reference.paramNames[reference.requiredParameters()[i]] + ": ");
-            args[reference.requiredParameters()[i]] = io.readLine();
+        String[] params = new String[24];
+        params = askParameters(reference, true, params);
+        params = askParameters(reference, false, params);
+        if (validateParameters(params)) {
+            reference.setParameters(params);
+            refDB.add(reference);
+            io.print("Success: Reference added.\n");
+        } else {
+            io.print("Error: one or more paramters were invalid. Reference was not saved.\n");
         }
-        reference.setParameters(args);
-        this.refDB.add(reference);
+    }
+
+    private String[] askParameters(Reference reference, boolean parametersRequired, String[] params) {
+        String input;
+        int parameterIndex;
+        int length = getParameterArrayLength(reference, parametersRequired);
+        String[] appendedParams = params;
+
+        for (int i = 0; i < length; i++) {
+            parameterIndex = getParameterIndex(reference, parametersRequired, i);
+            printParameterName(reference, parametersRequired, parameterIndex);
+            input = io.readLine();
+            if (parametersRequired || (!parametersRequired && !input.isEmpty())) {
+                appendedParams[parameterIndex] = input;
+            }
+        }
+        return appendedParams;
+    }
+
+    private int getParameterArrayLength(Reference reference, boolean parametersRequired) {
+        if (parametersRequired) {
+            return reference.requiredParameters().length;
+        }
+        return reference.optionalParameters().length;
+    }
+
+    private int getParameterIndex(Reference reference, boolean parametersRequired, int i) {
+        if (parametersRequired) {
+            return reference.requiredParameters()[i];
+        }
+        return reference.optionalParameters()[i];
+    }
+
+    private void printParameterName(Reference reference, boolean parametersRequired, int parameterIndex) {
+        String message = "";
+        if (!parametersRequired) {
+            message = "(optional, press enter without inputting text to skip)";
+        }
+        io.print(reference.paramNames[parameterIndex] + message + ": ");
+    }
+
+    private boolean validateParameters(String[] parameters) {
+        for (int i = 0; i < parameters.length; i++) {
+            if (parameters[i] != null) {
+                if (!validateParameter(parameters[i], i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean validateParameter(String parameter, int parameterIndex) {
+        if (isParameterSupposedToBeANumber(parameterIndex)) {
+            return DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
+        } else if (isParameterSupposedToBeARangeOfPages(parameterIndex)) {
+            return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS;
+        } else { // else it's supposed to be a regular string
+            return DataValidator.Validate(parameter, DataValidator.TEXT) == DataValidator.TEXT;
+        }
+    }
+
+    private boolean isParameterSupposedToBeANumber(int parameterIndex) {
+        return parameterIndex == Reference.NUMBER || parameterIndex == Reference.VOLUME || parameterIndex == Reference.YEAR;
+    }
+
+    private boolean isParameterSupposedToBeARangeOfPages(int parameterIndex) {
+        return parameterIndex == Reference.PAGES;
     }
 
     // asks the user for a title and searches for a reference in the database with a matching title
@@ -111,15 +182,15 @@ public class ConsoleUI {
         String title = io.readLine();
         printResults(refDB.find(title));
     }
-    
+
     private void printResults(List<Reference> references) {
         if (references.isEmpty()) {
             io.print("No references found with the specified search terms!\n");
         }
-        
+
         for (Reference reference : references) {
             io.print(reference.toString());
         }
     }
-    
+
 }

@@ -15,30 +15,30 @@ public class Reference implements Serializable {
     private final ReferenceType referenceType;
     private String tag;
 
-    private final int ADDRESS = 0;
-    private final int ANNOTE = 1;
-    private final int AUTHOR = 2;
-    private final int BOOKTITLE = 3;
-    private final int CHAPTER = 4;
-    private final int CROSSREF = 5;
-    private final int EDITION = 6;
-    private final int EDITOR = 7;
-    private final int HOWPUBLISHED = 8;
-    private final int INSTITUTION = 9;
-    private final int JOURNAL = 10;
-    private final int KEY = 11;
-    private final int MONTH = 12;
-    private final int NOTE = 13;
-    private final int NUMBER = 14;
-    private final int ORGANIZATION = 15;
-    private final int PAGES = 16;
-    private final int PUBLISHER = 17;
-    private final int SCHOOL = 18;
-    private final int SERIES = 19;
-    private final int TITLE = 20;
-    private final int TYPE = 21;
-    private final int VOLUME = 22;
-    private final int YEAR = 23;
+    public final static int ADDRESS = 0;
+    public final static int ANNOTE = 1;
+    public final static int AUTHOR = 2;
+    public final static int BOOKTITLE = 3;
+    public final static int CHAPTER = 4;
+    public final static int CROSSREF = 5;
+    public final static int EDITION = 6;
+    public final static int EDITOR = 7;
+    public final static int HOWPUBLISHED = 8;
+    public final static int INSTITUTION = 9;
+    public final static int JOURNAL = 10;
+    public final static int KEY = 11;
+    public final static int MONTH = 12;
+    public final static int NOTE = 13;
+    public final static int NUMBER = 14;
+    public final static int ORGANIZATION = 15;
+    public final static int PAGES = 16;
+    public final static int PUBLISHER = 17;
+    public final static int SCHOOL = 18;
+    public final static int SERIES = 19;
+    public final static int TITLE = 20;
+    public final static int TYPE = 21;
+    public final static int VOLUME = 22;
+    public final static int YEAR = 23;
 
     private String address;         //0
     private String annote;          //1
