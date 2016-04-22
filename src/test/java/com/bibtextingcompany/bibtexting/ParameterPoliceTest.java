@@ -46,15 +46,11 @@ import static org.junit.Assert.*;
     
      Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
      
-      boolean noErrors = true;
+      String refToString= reference.toString();
         
-        for (int i = 0; i<24; i++) {
-          if (!(params[i].contains("<") && params[i].contains(">"))) {
-              noErrors=false;
-          }
-        }
-        
-        assertEquals(noErrors, true);
+        assertEquals(refToString.contains("<error>"), false);
+        assertEquals(refToString.contains("<NaN>"), false);
+        assertEquals(refToString.contains("<null>"), false);
     
     }
     /**
