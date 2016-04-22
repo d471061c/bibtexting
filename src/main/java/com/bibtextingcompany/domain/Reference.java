@@ -87,7 +87,6 @@ public class Reference implements Serializable {
     public Reference(ReferenceType referenceType) {
         this.referenceType = referenceType;
         this.placeholderize();
-        System.out.println(toString());
     }
 
     public int[][] parameters() {
