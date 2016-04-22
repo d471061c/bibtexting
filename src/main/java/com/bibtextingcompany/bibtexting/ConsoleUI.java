@@ -142,7 +142,7 @@ public class ConsoleUI {
     private void printParameterName(Reference reference, boolean parametersRequired, int parameterIndex) {
         String message = "";
         if (!parametersRequired) {
-            message = "(optional, press enter without inputting text to skip)";
+            message = " (optional, press enter without inputting text to skip)";
         }
         io.print(reference.paramNames[parameterIndex] + message + ": ");
     }

@@ -10,7 +10,9 @@ public class Reference implements Serializable {
 
     public enum ReferenceType {
 
-        ARTICLE, BOOK, INPROCEEDINGS
+        ARTICLE, BOOK, BOOKLET, CONFERENCE, INBOOK, INCOLLECTION, INPROCEEDINGS,
+        MANUAL, MASTERSTHESIS, MISC, PHDTHESIS, PROCEEDINGS, TECHREPORT, UNPUBLISHED
+
     }
 
     private final ReferenceType referenceType;
@@ -88,48 +90,92 @@ public class Reference implements Serializable {
         System.out.println(toString());
     }
 
-    public int[] requiredParameters() {
+    public int[][] parameters() {
         int[] required = null;
-        switch (this.referenceType) {
-            case ARTICLE:
-                required = new int[]{AUTHOR, TITLE, JOURNAL, YEAR, VOLUME};
-                break;
-            case BOOK:
-                required = new int[]{AUTHOR, EDITOR, TITLE, PUBLISHER, YEAR};
-                break;
-            case INPROCEEDINGS:
-                required = new int[]{AUTHOR, TITLE, BOOKTITLE, YEAR};
-                break;
-        }
-        return required;
-    }
-
-    public int[] optionalParameters() {
         int[] optional = null;
         switch (this.referenceType) {
             case ARTICLE:
+                required = new int[]{AUTHOR, TITLE, JOURNAL, YEAR, VOLUME};
                 optional = new int[]{NUMBER, PAGES, MONTH, NOTE, KEY};
                 break;
             case BOOK:
+                required = new int[]{AUTHOR, EDITOR, TITLE, PUBLISHER, YEAR};
                 optional = new int[]{VOLUME, NUMBER, SERIES, ADDRESS, EDITION, MONTH, NOTE, KEY};
                 break;
+            case BOOKLET:
+                required = new int[]{TITLE};
+                optional = new int[]{AUTHOR, HOWPUBLISHED, ADDRESS, MONTH, YEAR};
+                break;
+            case CONFERENCE:
+                required = new int[]{AUTHOR, TITLE, BOOKTITLE, YEAR};
+                optional = new int[]{EDITOR, VOLUME, NUMBER, SERIES, PAGES, ADDRESS, MONTH, ORGANIZATION, PUBLISHER, NOTE};
+                break;
+            case INBOOK:
+                required = new int[]{AUTHOR, EDITOR, TITLE, CHAPTER, PAGES};
+                optional = new int[]{VOLUME, NUMBER, SERIES, TYPE, ADDRESS, EDITION, MONTH, NOTE};
+                break;
+            case INCOLLECTION:
+                required = new int[]{AUTHOR, TITLE, BOOKTITLE, PUBLISHER, YEAR};
+                optional = new int[]{EDITOR, VOLUME, NUMBER, SERIES, TYPE, CHAPTER, PAGES, ADDRESS, EDITION, MONTH, NOTE};
+                break;
             case INPROCEEDINGS:
+                required = new int[]{AUTHOR, TITLE, BOOKTITLE, YEAR};
                 optional = new int[]{EDITOR, VOLUME, NUMBER, SERIES, PAGES, ADDRESS, MONTH, ORGANIZATION, PUBLISHER, NOTE, KEY};
                 break;
+            case MANUAL:
+                required = new int[]{TITLE};
+                optional = new int[]{AUTHOR, ORGANIZATION, ADDRESS, EDITION, MONTH, YEAR, NOTE};
+                break;
+            case MASTERSTHESIS:
+                required = new int[]{AUTHOR, TITLE, SCHOOL, YEAR};
+                optional = new int[]{TYPE, ADDRESS, MONTH, NOTE};
+                break;
+            case MISC:
+                required = new int[]{};
+                optional = new int[]{AUTHOR, TITLE, HOWPUBLISHED, MONTH, YEAR, NOTE};
+                break;
+            case PHDTHESIS:
+                required = new int[]{AUTHOR, TITLE, SCHOOL, YEAR};
+                optional = new int[]{TYPE, ADDRESS, MONTH, NOTE};
+                break;
+            case PROCEEDINGS:
+                required = new int[]{TITLE, YEAR};
+                optional = new int[]{EDITOR, VOLUME, NUMBER, SERIES, ADDRESS, MONTH, ORGANIZATION, PUBLISHER, NOTE};
+                break;
+            case TECHREPORT:
+                required = new int[]{AUTHOR, TITLE, INSTITUTION, YEAR};
+                optional = new int[]{TYPE, NUMBER, ADDRESS, MONTH, NOTE};
+                break;
+            case UNPUBLISHED:
+                required = new int[]{AUTHOR, TITLE, NOTE};
+                optional = new int[]{MONTH, YEAR};
+                break;
         }
-        return optional;
+        int[][] parameters = {required, optional};
+        return parameters;
+    }
+
+    public int[] requiredParameters() {
+        return this.parameters()[0];
+    }
+
+    public int[] optionalParameters() {
+        return this.parameters()[1];
     }
 
     /**
-     * Sets new parameters for a reference. Runs a parsing AND cleaning for the inputs first.
+     * Sets new parameters for a reference. Runs a parsing AND cleaning for the
+     * inputs first.
+     *
      * @param params new set of Params
-     * @return returns params WITH error messages. The error messages can be used to advice the user.
+     * @return returns params WITH error messages. The error messages can be
+     * used to advice the user.
      */
     public String[] setParameters(String[] params) {
-        
+
         String[] processedParamsWithErrors = ParameterPolice.process(params);
         params = ParameterPolice.clean(processedParamsWithErrors);
-        
+
         for (int param = 0; param < params.length; param++) {
             switch (param) {
                 case 0:
@@ -177,9 +223,9 @@ public class Reference implements Serializable {
                 case 14:
                     if (params[param] != null) {
                         if (Numeric.confirmInteger(params[param])) {
-                        this.number = Integer.parseInt(params[param]);
+                            this.number = Integer.parseInt(params[param]);
                         } else {
-                        this.number = 666;    
+                            this.number = 666;
                         }
                     }
                     break;
@@ -207,18 +253,18 @@ public class Reference implements Serializable {
                 case 22:
                     if (params[param] != null) {
                         if (Numeric.confirmInteger(params[param])) {
-                        this.volume = Integer.parseInt(params[param]);
+                            this.volume = Integer.parseInt(params[param]);
                         } else {
-                        this.volume = 666;    
+                            this.volume = 666;
                         }
                     }
                     break;
                 case 23:
                     if (params[param] != null) {
                         if (Numeric.confirmInteger(params[param])) {
-                        this.year = Integer.parseInt(params[param]);
+                            this.year = Integer.parseInt(params[param]);
                         } else {
-                        this.year = 666;    
+                            this.year = 666;
                         }
                     }
                     break;
@@ -226,13 +272,13 @@ public class Reference implements Serializable {
                     break;
             }
         }
-        
+
         return processedParamsWithErrors;
     }
 
     /**
-     * Creates placeholder data set for the reference.
-     * This is to prevent any non-functional (crash-prone) references being created.
+     * Creates placeholder data set for the reference. This is to prevent any
+     * non-functional (crash-prone) references being created.
      */
     public void placeholderize() {
         String[] params = new String[24];
@@ -240,37 +286,35 @@ public class Reference implements Serializable {
         int[] optional;
         required = this.requiredParameters();
         optional = this.optionalParameters();
-         
-        
-        for (int i = 0; i<required.length; i++) {
-            
-                params[required[i]]="Placeholder";
-                
-            if (required[i]==4 || required[i] == 12 || required[i] == 14 || required[i] == 22 || required[i] == 23) {
-                params[required[i]]="10";
+
+        for (int i = 0; i < required.length; i++) {
+
+            params[required[i]] = "Placeholder";
+
+            if (required[i] == 4 || required[i] == 12 || required[i] == 14 || required[i] == 22 || required[i] == 23) {
+                params[required[i]] = "10";
             }
-            if (required[i]==16) {
-                params[required[i]]="15--25";
-            }
-        }
-        
-         for (int i = 0; i<optional.length; i++) {
-                params[optional[i]]="Placeholder";
-                
-            if (optional[i]==4 || optional[i] == 12 || optional[i] == 14 || optional[i] == 22 || optional[i] == 23) {
-                params[optional[i]]="10";
-            }
-            if (optional[i]==16) {
-                params[optional[i]]="15--25";
+            if (required[i] == 16) {
+                params[required[i]] = "15--25";
             }
         }
-        
-        
+
+        for (int i = 0; i < optional.length; i++) {
+            params[optional[i]] = "Placeholder";
+
+            if (optional[i] == 4 || optional[i] == 12 || optional[i] == 14 || optional[i] == 22 || optional[i] == 23) {
+                params[optional[i]] = "10";
+            }
+            if (optional[i] == 16) {
+                params[optional[i]] = "15--25";
+            }
+        }
+
         this.setParameters(params);
-        
+
         this.setTag("placeholder_tag");
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -438,6 +482,4 @@ public class Reference implements Serializable {
         return true;
     }
 
-    
-    
 }

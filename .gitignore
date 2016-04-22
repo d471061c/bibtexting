@@ -1,4 +1,4 @@
-/bibtexting/target/
-/bibtexting/nbproject/
-/bibtexting/DATABASE
 /target/
+/nbproject/
+DATABASE
+
