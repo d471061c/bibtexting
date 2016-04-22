@@ -1,0 +1,17 @@
+@manual{5,
+    author  = "Boaty McBoatface",
+    edition  = "2nd Ed",
+    month  = "January",
+    title  = "Manual for Dummies",
+    year  = "2002",
+}
+@book{6,
+    author  = "Booky McBookface",
+    edition  = "3rd Ed",
+    editor  = "Eddie Tor",
+    number  = "10",
+    publisher  = "Books-R-Us, Inc.",
+    title  = "The Big Book of Bookish Stuff",
+    volume  = "10",
+    year  = "2004",
+}

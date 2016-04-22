@@ -2,6 +2,9 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference.ReferenceType;
 import com.bibtextingcompany.domain.Reference;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,7 +30,7 @@ public class ConsoleUI {
     /**
      * Starts up the user interface and prompts the user for inputs.
      */
-    public void run() {
+    public void run() throws IOException {
         help();
 
         while (true) {
@@ -50,7 +53,7 @@ public class ConsoleUI {
     }
 
     // Returns true if the user wishes to end program execution, false otherwise.
-    private boolean processCommand(String command) {
+    private boolean processCommand(String command) throws IOException {
         if (command.equals("exit")) {
             io.print("Goodbye!\n");
             return true;
@@ -94,7 +97,7 @@ public class ConsoleUI {
         io.print("\n> ");
     }
 
-    private void add(ReferenceType type) {
+    private void add(ReferenceType type) throws IOException {
         Reference reference = new Reference(type);
         String[] params = new String[24];
         params = askParameters(reference, true, params);
@@ -103,6 +106,10 @@ public class ConsoleUI {
             reference.setParameters(params);
             refDB.add(reference);
             io.print("Success: Reference added.\n");
+            BufferedWriter writer = new BufferedWriter(new FileWriter("BibteX.txt",true)) ;
+            writer.write(reference.toString());
+            writer.close() ;
+
         } else {
             io.print("Error: one or more paramters were invalid. Reference was not saved.\n");
         }
