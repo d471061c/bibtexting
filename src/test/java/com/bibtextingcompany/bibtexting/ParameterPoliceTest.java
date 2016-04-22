@@ -54,7 +54,7 @@ import static org.junit.Assert.*;
         
         for (int i = 0; i<24; i++) {
           if (!(params[i].contains("<") && params[i].contains(">"))) {
-              allErrors=false
+              allErrors=false;
           }
         }
         
@@ -67,7 +67,7 @@ import static org.junit.Assert.*;
         
         for (int i = 0; i<24; i++) {
           if (params[i]!=null) {
-              allNulls=false
+              allNulls=false;
           }
         }
         
