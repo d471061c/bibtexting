@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package com.bibtextingcompany.bibtexting;
-package com.bibtextingcompany.domain;
 
+import com.bibtextingcompany.domain.Reference;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
