@@ -1,10 +1,11 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 //        String testi = "Yölevi Äänekoski: Validating Strings in BibteX (1995)";
 //        System.out.println("Validoidaan string: "+testi);

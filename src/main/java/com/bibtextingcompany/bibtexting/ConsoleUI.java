@@ -29,6 +29,7 @@ public class ConsoleUI {
 
     /**
      * Starts up the user interface and prompts the user for inputs.
+     * @throws java.io.IOException
      */
     public void run() throws IOException {
         help();
