@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.bibtextingcompany.bibtexting;
+package com.bibtextingcompany.domain;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,7 +39,26 @@ import static org.junit.Assert.*;
     }
     
     /**
-     * Test of Validate method, of class StringValidator.
+     * Test empty parameter fields.
+     */
+    @Test
+    public void testPlaceholderParameters() {
+    
+     Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
+     
+      boolean noErrors = true;
+        
+        for (int i = 0; i<24; i++) {
+          if (!(params[i].contains("<") && params[i].contains(">"))) {
+              noErrors=false;
+          }
+        }
+        
+        assertEquals(noErrors, true);
+    
+    }
+    /**
+     * Test empty parameter fields.
      */
     @Test
     public void testEmpties() {
