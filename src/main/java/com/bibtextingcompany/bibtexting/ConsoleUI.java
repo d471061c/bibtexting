@@ -162,7 +162,17 @@ public class ConsoleUI {
         if (isParameterSupposedToBeANumber(parameterIndex)) {
             return DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
         } else if (isParameterSupposedToBeARangeOfPages(parameterIndex)) {
-            return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS;
+            boolean singleNumber=false;
+            boolean rangeOfNumbers=false;
+            if (DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS) {
+                rangeOfNumbers=true;
+            }
+            if (DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER) {
+                singleNumber=true;
+            }
+            if (rangeOfNumbers || singleNumber) {return true;}
+            return false;
+            //return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS;
         } else { // else it's supposed to be a regular string
             return DataValidator.Validate(parameter, DataValidator.TEXT) == DataValidator.TEXT;
         }

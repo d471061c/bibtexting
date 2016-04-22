@@ -78,7 +78,7 @@ scenario "New book is not saved", {
 scenario "New inproceedings is saved", {
     given 'command add selected', {
         refDB = new ReferenceDatabase("DATABASE_TEST")
-        io = new StubIO("add", "3", "author", "title", "booktitle", "1995", "editor", "23", "22", "series", "23-45", "address", "month", "organization", "publisher", "note", "key", "exit")
+        io = new StubIO("add", "7", "author", "title", "booktitle", "1995", "editor", "23", "22", "series", "23-45", "address", "month", "organization", "publisher", "note", "key", "exit")
         ui = new ConsoleUI(io, refDB)
     }
 
@@ -96,7 +96,7 @@ scenario "New inproceedings is saved", {
 scenario "New inproceedings is saved", {
     given 'command add selected', {
         refDB = new ReferenceDatabase("DATABASE_TEST")
-        io = new StubIO("add", "3", "author", "title", "booktitle", "1995", "", "", "", "", "", "", "", "", "", "", "", "exit")
+        io = new StubIO("add", "7", "author", "title", "booktitle", "1995", "", "", "", "", "", "", "", "", "", "", "", "exit")
         ui = new ConsoleUI(io, refDB)
     }
 
@@ -114,7 +114,7 @@ scenario "New inproceedings is saved", {
 scenario "New inproceedings is not saved", {
     given 'command add selected', {
         refDB = new ReferenceDatabase("DATABASE_TEST")
-        io = new StubIO("add", "3", "author", "title", "booktitle", "year", "editor", "23", "22", "series", "23-45", "address", "month", "organization", "publisher", "note", "key", "exit")
+        io = new StubIO("add", "7", "author", "title", "booktitle", "year", "editor", "23", "22", "series", "23-45", "address", "month", "organization", "publisher", "note", "key", "exit")
         ui = new ConsoleUI(io, refDB)
     }
 
@@ -132,7 +132,7 @@ scenario "New inproceedings is not saved", {
 scenario "New inproceedings is not saved", {
     given 'command add selected', {
         refDB = new ReferenceDatabase("DATABASE_TEST")
-        io = new StubIO("add", "3", "author", "title", "booktitle", "1995", "editor", "23", "22", "series", "pages", "address", "month", "organization", "publisher", "note", "key", "exit")
+        io = new StubIO("add", "7", "author", "title", "booktitle", "1995", "editor", "23", "22", "series", "pages", "address", "month", "organization", "publisher", "note", "key", "exit")
         ui = new ConsoleUI(io, refDB)
     }
 
