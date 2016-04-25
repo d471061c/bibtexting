@@ -11,7 +11,7 @@ import java.util.List;
  * A command line based user interface.
  */
 public class ConsoleUI {
-
+    
     private final IO io;
     private final ReferenceDatabase refDB;
 
@@ -29,11 +29,12 @@ public class ConsoleUI {
 
     /**
      * Starts up the user interface and prompts the user for inputs.
+     *
      * @throws java.io.IOException
      */
     public void run() throws IOException {
         help();
-
+        
         while (true) {
             io.print("\n");
             io.print("> ");
@@ -43,18 +44,19 @@ public class ConsoleUI {
             }
         }
     }
-
+    
     private void help() {
         io.print("Available commands:\n");
         io.print("add\n");
+        io.print("create\n");
         io.print("exit\n");
         io.print("help\n");
         io.print("view\n");
-
+        
     }
 
     // Returns true if the user wishes to end program execution, false otherwise.
-    private boolean processCommand(String command) throws IOException {
+    private boolean processCommand(String command) {
         if (command.equals("exit")) {
             io.print("Goodbye!\n");
             return true;
@@ -63,22 +65,28 @@ public class ConsoleUI {
         } else if (command.equals("help")) {
             help();
         } else if (command.equals("add")) {
-            viewTypes();
-            String subcommand = io.readLine();
-            if (subcommand.equals("back")) {
-                help();
-            } else if (!validType(subcommand)) {
-                processCommand("add");
-            } else {
-                ReferenceType type = ReferenceType.values()[Integer.parseInt(subcommand) - 1];
-                add(type);
-            }
+            chooseReferenceType();
+        } else if (command.equals("create")) {
+            create();
         } else {
             io.print("Invalid command; type help for a list of commands\n");
         }
         return false;
     }
-
+    
+    private void chooseReferenceType() {
+        viewTypes();
+        String subcommand = io.readLine();
+        if (subcommand.equals("back")) {
+            help();
+        } else if (!validType(subcommand)) {
+            processCommand("add");
+        } else {
+            ReferenceType type = ReferenceType.values()[Integer.parseInt(subcommand) - 1];
+            add(type);
+        }
+    }
+    
     private boolean validType(String subcommand) {
         int typeNumber = 0;
         try {
@@ -88,7 +96,7 @@ public class ConsoleUI {
         }
         return typeNumber >= 1 && typeNumber <= ReferenceType.values().length;
     }
-
+    
     private void viewTypes() {
         io.print("enter type number or back to return to main menu\n");
         ReferenceType[] types = ReferenceType.values();
@@ -97,8 +105,8 @@ public class ConsoleUI {
         }
         io.print("\n> ");
     }
-
-    private void add(ReferenceType type) throws IOException {
+    
+    private void add(ReferenceType type) {
         Reference reference = new Reference(type);
         String[] params = new String[24];
         params = askParameters(reference, true, params);
@@ -107,21 +115,20 @@ public class ConsoleUI {
             reference.setParameters(params);
             refDB.add(reference);
             io.print("Success: Reference added.\n");
-            BufferedWriter writer = new BufferedWriter(new FileWriter("BibteX.txt",true)) ;
-            writer.write(reference.toString());
-            writer.close() ;
-
+//            BufferedWriter writer = new BufferedWriter(new FileWriter("BibteX.bib", true));
+//            writer.write(reference.toString());
+//            writer.close();
         } else {
             io.print("Error: one or more paramters were invalid. Reference was not saved.\n");
         }
     }
-
+    
     private String[] askParameters(Reference reference, boolean parametersRequired, String[] params) {
         String input;
         int parameterIndex;
         int length = getParameterArrayLength(reference, parametersRequired);
         String[] appendedParams = params;
-
+        
         for (int i = 0; i < length; i++) {
             parameterIndex = getParameterIndex(reference, parametersRequired, i);
             printParameterName(reference, parametersRequired, parameterIndex);
@@ -132,21 +139,21 @@ public class ConsoleUI {
         }
         return appendedParams;
     }
-
+    
     private int getParameterArrayLength(Reference reference, boolean parametersRequired) {
         if (parametersRequired) {
             return reference.requiredParameters().length;
         }
         return reference.optionalParameters().length;
     }
-
+    
     private int getParameterIndex(Reference reference, boolean parametersRequired, int i) {
         if (parametersRequired) {
             return reference.requiredParameters()[i];
         }
         return reference.optionalParameters()[i];
     }
-
+    
     private void printParameterName(Reference reference, boolean parametersRequired, int parameterIndex) {
         String message = "";
         if (!parametersRequired) {
@@ -154,7 +161,7 @@ public class ConsoleUI {
         }
         io.print(reference.paramNames[parameterIndex] + message + ": ");
     }
-
+    
     private boolean validateParameters(String[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i] != null) {
@@ -165,31 +172,33 @@ public class ConsoleUI {
         }
         return true;
     }
-
+    
     private boolean validateParameter(String parameter, int parameterIndex) {
         if (isParameterSupposedToBeANumber(parameterIndex)) {
             return DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
         } else if (isParameterSupposedToBeARangeOfPages(parameterIndex)) {
-            boolean singleNumber=false;
-            boolean rangeOfNumbers=false;
+            boolean singleNumber = false;
+            boolean rangeOfNumbers = false;
             if (DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS) {
-                rangeOfNumbers=true;
+                rangeOfNumbers = true;
             }
             if (DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER) {
-                singleNumber=true;
+                singleNumber = true;
             }
-            if (rangeOfNumbers || singleNumber) {return true;}
+            if (rangeOfNumbers || singleNumber) {
+                return true;
+            }
             return false;
             //return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS;
         } else { // else it's supposed to be a regular string
             return DataValidator.Validate(parameter, DataValidator.TEXT) == DataValidator.TEXT;
         }
     }
-
+    
     private boolean isParameterSupposedToBeANumber(int parameterIndex) {
         return parameterIndex == Reference.NUMBER || parameterIndex == Reference.VOLUME || parameterIndex == Reference.YEAR;
     }
-
+    
     private boolean isParameterSupposedToBeARangeOfPages(int parameterIndex) {
         return parameterIndex == Reference.PAGES;
     }
@@ -200,15 +209,24 @@ public class ConsoleUI {
         String title = io.readLine();
         printResults(refDB.find(title));
     }
-
+    
     private void printResults(List<Reference> references) {
         if (references.isEmpty()) {
             io.print("No references found with the specified search terms!\n");
         }
-
+        
         for (Reference reference : references) {
             io.print(reference.toString());
         }
     }
-
+    
+    private void create() {
+        io.print("File name: ");
+        String filename = io.readLine();
+        
+        if (!FileIO.writeBibtex(filename, refDB.getAll())) {
+            io.print("Writing to file failed\n");
+        }
+    }
+    
 }

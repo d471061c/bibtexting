@@ -2,6 +2,7 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,4 +138,7 @@ public class ReferenceDatabase {
         FileIO.clearFile(filename);
     }
 
+    public Collection<Reference> getAll() {
+        return referencemap.values();
+    }
 }

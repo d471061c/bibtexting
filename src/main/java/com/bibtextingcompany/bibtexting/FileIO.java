@@ -1,10 +1,14 @@
 package com.bibtextingcompany.bibtexting;
 
+import com.bibtextingcompany.domain.Reference;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 
 /**
  * Class for serializing and deserializing Objects of any serializable type
@@ -82,7 +86,7 @@ public final class FileIO {
 
     /**
      * Clears out the contents of a file with the given filename.
-     * 
+     *
      * @param filename Name of the file which content will be cleared
      */
     public static void clearFile(String filename) {
@@ -95,6 +99,27 @@ public final class FileIO {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    /**
+     * Creates new bibtex file out of the given references.
+     * If the user has a bibtex file with the same name in the folder, it is overwritten.
+     * 
+     * @param filename Name for the new file.
+     * @param references References which are written to the file.
+     * @return True if creating the file was successful, false if unsuccessful.
+     */
+    public static boolean writeBibtex(String filename, Collection<Reference> references) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename + ".bib", false));
+            for (Reference reference : references) {
+                writer.write(reference.toString());
+            }
+            writer.close();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 }
