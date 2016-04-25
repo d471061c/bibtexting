@@ -1,7 +1,7 @@
 import com.bibtextingcompany.bibtexting.*
 import com.bibtextingcompany.domain.Reference
 
-description 'User can add an book reference to the database'
+description 'User can add an book and inproceedings reference to the database'
 
 scenario "New book is saved", {
     given 'command add selected', {
@@ -16,7 +16,7 @@ scenario "New book is saved", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -34,7 +34,7 @@ scenario "New book", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -52,7 +52,7 @@ scenario "New book is not saved", {
 
     then 'the user is informed that the save was not successful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -70,7 +70,7 @@ scenario "New book is not saved", {
 
     then 'the user is informed that the save was not successful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -88,7 +88,7 @@ scenario "New inproceedings is saved", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -106,7 +106,7 @@ scenario "New inproceedings is saved", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -124,7 +124,7 @@ scenario "New inproceedings is not saved", {
 
     then 'the user is informed that the save was unsuccessful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
    }
 }
@@ -142,7 +142,7 @@ scenario "New inproceedings is not saved", {
 
     then 'the user is informed that the save was unsuccessful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
    }
 }

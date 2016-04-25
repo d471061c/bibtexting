@@ -30,9 +30,8 @@ public class ConsoleUI {
     /**
      * Starts up the user interface and prompts the user for inputs.
      *
-     * @throws java.io.IOException
      */
-    public void run() throws IOException {
+    public void run() {
         help();
         
         while (true) {
@@ -119,7 +118,7 @@ public class ConsoleUI {
 //            writer.write(reference.toString());
 //            writer.close();
         } else {
-            io.print("Error: one or more paramters were invalid. Reference was not saved.\n");
+            io.print("Error: one or more parameters were invalid. Reference was not saved.\n");
         }
     }
     
@@ -220,6 +219,7 @@ public class ConsoleUI {
         }
     }
     
+    // asks user for a file name and tries to create a file with the specified name
     private void create() {
         io.print("File name: ");
         String filename = io.readLine();

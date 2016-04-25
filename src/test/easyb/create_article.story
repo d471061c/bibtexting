@@ -16,7 +16,7 @@ scenario "New Article is saved", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -34,7 +34,7 @@ scenario "New Article is saved", {
 
     then 'the user is informed that the save was successful', {
         io.getPrints().shouldHave("Success: Reference added.")
-        io.getPrints().shouldNotHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldNotHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -52,7 +52,7 @@ scenario "New Article is not saved", {
 
     then 'the user is informed that the save was not successful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
@@ -70,7 +70,7 @@ scenario "New Article is not saved", {
 
     then 'the user is informed that the save was not successful', {
         io.getPrints().shouldNotHave("Success: Reference added.")
-        io.getPrints().shouldHave("Error: one or more paramters were invalid. Reference was not saved.")
+        io.getPrints().shouldHave("Error: one or more parameters were invalid. Reference was not saved.")
         refDB.clearDatabase()
     }
 }
