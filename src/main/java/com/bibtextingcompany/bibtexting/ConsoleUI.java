@@ -48,6 +48,7 @@ public class ConsoleUI {
         io.print("Available commands:\n");
         io.print("add\n");
         io.print("create\n");
+        io.print("customize\n");
         io.print("exit\n");
         io.print("help\n");
         io.print("view\n");
@@ -65,6 +66,8 @@ public class ConsoleUI {
             help();
         } else if (command.equals("add")) {
             chooseReferenceType();
+        } else if (command.equals("customize")) {
+            customCreate();
         } else if (command.equals("create")) {
             create();
         } else {
@@ -224,7 +227,36 @@ public class ConsoleUI {
         io.print("File name: ");
         String filename = io.readLine();
         
+        String validatedFilename = FileIO.validateFilename(filename);
+        
+        if (!validatedFilename.contentEquals(filename)) {
+            io.print("Filename corrected from "+filename+" to "+validatedFilename);
+            filename=validatedFilename;
+        }
+        
         if (!FileIO.writeBibtex(filename, refDB.getAll())) {
+            io.print("Writing to file failed\n");
+        }
+    }
+    
+      // asks user for a file name and tries to create a file with the specified name
+    private void customCreate() {
+        io.print("Create customized bib file.\nSeparate keywords with commas or spaces.\nA keyword with @ in front counts as reference type (e.g. @article).\n");
+        io.print("Include keywords (blank = include all):  ");
+        String include = io.readLine();
+        io.print("Exclude keywords (blank = exclude nothing):  ");
+        String exclude = io.readLine();
+        io.print("File name: ");
+        String filename = io.readLine();
+        
+        String validatedFilename = FileIO.validateFilename(filename);
+        
+        if (!validatedFilename.contentEquals(filename)) {
+            io.print("Filename corrected from "+filename+" to "+validatedFilename);
+            filename=validatedFilename;
+        }
+        
+        if (!FileIO.writeBibtex(filename, refDB.getMatching(include, exclude))) {
             io.print("Writing to file failed\n");
         }
     }

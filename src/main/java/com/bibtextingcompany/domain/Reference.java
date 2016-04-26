@@ -79,12 +79,17 @@ public class Reference implements Serializable {
     public void setTag(String tag) {
         this.tag = tag;
     }
-
+    
+                
     public String getTitle() {
         return this.title;
     }
+    
+    public Reference.ReferenceType getReferenceType() {
+        return this.referenceType;
+    }
 
-    public Reference(ReferenceType referenceType) {
+    public Reference (ReferenceType referenceType) {
         this.referenceType = referenceType;
         this.placeholderize();
     }

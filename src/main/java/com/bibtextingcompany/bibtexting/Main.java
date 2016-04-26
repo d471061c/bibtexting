@@ -69,6 +69,14 @@ public class Main {
 //        String FILENAME = "DATABASE_TEST";
         ReferenceDatabase refDB = new ReferenceDatabase("DATABASE");
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
+
+        
+        
+        
+        
+        
+        
+        
         ui.run();   
     }
 }

@@ -121,5 +121,67 @@ public final class FileIO {
         }
         return true;
     }
+    
+    /**
+     * Removes problematic characters from the filename (if any are found)
+     * @param filename user input filename
+     * @return user input filename without problematic chars
+     */
+    public static String validateFilename(String filename) {
+             
+        if (filename.contains("/")) {
+            filename=filename.replace("/", "");
+        }
+        
+        if (filename.contains("\\")) {
+            filename=filename.replace("\\", "");
+        }
+        
+        if (filename.contains("?")) {
+            filename=filename.replace("?", "");
+        }
+        
+        if (filename.contains("%")) {
+            filename=filename.replace("%", "");
+        }
+        
+        if (filename.contains("*")) {
+            filename=filename.replace("*", "");
+        }
+        
+        if (filename.contains(":")) {
+            filename=filename.replace(":", "");
+        }
+        
+        if (filename.contains("|")) {
+            filename=filename.replace("|", "");
+        }
+        
+        if (filename.contains("\"")) {
+            filename=filename.replace("\"", "");
+        }
+        
+        if (filename.contains("<")) {
+            filename=filename.replace("<", "");
+        }
+        
+        if (filename.contains(">")) {
+            filename=filename.replace(">", "");
+        }
+        
+        if (filename.contains(".")) {
+            filename=filename.replace(".", "");
+        }
+        
+        if (filename.contains(",")) {
+            filename=filename.replace(",", "");
+        }
+        
+        if (filename.length()<3) {
+            filename = "filename_too_short";
+        }
+        
+        return filename;
+    }
 
 }

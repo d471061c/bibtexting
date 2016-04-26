@@ -1,9 +1,11 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
+import com.bibtextingcompany.util.TypeToString;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -140,5 +142,133 @@ public class ReferenceDatabase {
 
     public Collection<Reference> getAll() {
         return referencemap.values();
+    }
+    
+    public Collection<Reference> getMatching(String include, String exclude) {
+        
+        Collection<Reference> matchingReferences = new ArrayList<Reference>();
+        
+        HashSet<Reference.ReferenceType> includedReferences = new HashSet<Reference.ReferenceType>();
+        HashSet<String> includedKeywords = new HashSet<String>();
+        HashSet<Reference.ReferenceType> excludedReferences = new HashSet<Reference.ReferenceType>();
+        HashSet<String> excludedKeywords = new HashSet<String>();
+        
+        StringBuilder sb = new StringBuilder();
+        boolean referenceFound = false;
+        
+        for (int i=0; i<include.length(); i++) {
+            if (include.charAt(i)=='@') {
+                referenceFound=true;
+            } else if (include.charAt(i)==' ' || include.charAt(i)==',' || i==include.length()-1) {
+                if (i==include.length()-1) {
+                    sb.append(include.charAt(i));
+                }
+                if (referenceFound && sb.length()>0) {
+                   // System.out.println("Trying to match: "+sb.toString());
+                    Reference.ReferenceType ref = TypeToString.convert(sb.toString());
+                    if (ref!=null) {
+                    //    System.out.println("Article type "+sb.toString()+" INCLUDED!");
+                        includedReferences.add(ref);
+                    }
+                    referenceFound=false;
+                    
+                } else if (sb.length()>0) {
+             //       System.out.println("word added: "+sb.toString());
+                    includedKeywords.add(sb.toString());
+                }
+                sb = new StringBuilder();
+            } else {
+                sb.append(include.charAt(i));
+            }
+            
+        }
+        
+        referenceFound = false;
+        sb = new StringBuilder();
+        
+        for (int i=0; i<exclude.length(); i++) {
+            if (exclude.charAt(i)=='@') {
+                referenceFound=true;
+            } else if (exclude.charAt(i)==' ' || exclude.charAt(i)==',' || i==exclude.length()-1) {
+                 if (i==exclude.length()-1) {
+                    sb.append(exclude.charAt(i));
+                }
+                if (referenceFound && sb.length()>0) {
+                   // System.out.println("Trying to match: "+sb.toString());
+                    Reference.ReferenceType ref = TypeToString.convert(sb.toString());
+                    if (ref!=null) {
+                 //       System.out.println("Article type "+sb.toString()+" EXCLUDED!");
+                        excludedReferences.add(ref);
+                    }
+                    referenceFound=false;
+                    
+                } else if (sb.length()>0) {
+              //      System.out.println("word excluded: "+sb.toString());
+                    excludedKeywords.add(sb.toString());
+                }
+                sb = new StringBuilder();
+            } else {
+                sb.append(exclude.charAt(i));
+            }
+            
+        }
+        
+        boolean includeAllRefs=false;
+        if (includedReferences.size()<1) {
+            includeAllRefs=true;
+        }
+        boolean includeAllWords=false;
+        if (includedKeywords.size()<1) {
+            includeAllWords=true;
+        }
+        System.out.println("Incl refs: "+includedReferences.size()+"; excluded refs: "+excludedReferences.size()+", keys inc: "+includedKeywords.toString()+", excluded keys: "+excludedKeywords.toString());
+        for (Reference reference : referencemap.values()) {
+            boolean notExcluded=true;
+            
+            if (excludedReferences.contains(reference.getReferenceType())) {
+                notExcluded=false;
+                continue;
+            }
+            for (String word : excludedKeywords) {
+            
+             if (reference.toString().toLowerCase().contains(word.toLowerCase())) {
+                notExcluded=false;
+                 //System.out.println("WORD: "+word+" excluded!");
+                continue;
+            }
+            }
+            
+            boolean included=false;
+            
+            if (notExcluded && (includeAllRefs || includedReferences.contains(reference.getReferenceType()))) {
+                
+                if (!includeAllWords) {
+                    
+                    for (String word : includedKeywords) {
+            
+                        if (reference.toString().toLowerCase().contains(word.toLowerCase())) {
+                            
+                           // System.out.println("WORD: "+word+" included!");
+                            included=true;
+                        continue;
+                        }
+                    }
+                    
+                 } else {
+                    included=true;
+                }
+            
+        }
+            if (included && notExcluded) {
+                System.out.println(reference.toString());
+                matchingReferences.add(reference);
+            } else {
+                //System.out.println(reference.getTitle()+" excluded!!");
+            }
+            
+        
+        
+    }
+        return matchingReferences;
     }
 }
