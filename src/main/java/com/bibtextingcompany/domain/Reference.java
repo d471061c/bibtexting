@@ -480,10 +480,102 @@ public class Reference implements Serializable {
         if (!Objects.equals(this.year, other.year)) {
             return false;
         }
-        if (!Arrays.deepEquals(this.paramNames, other.paramNames)) {
-            return false;
-        }
         return true;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAnnote(String annote) {
+        this.annote = annote;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setBooktitle(String booktitle) {
+        this.booktitle = booktitle;
+    }
+
+    public void setChapter(String chapter) {
+        this.chapter = chapter;
+    }
+
+    public void setCrossref(String crossref) {
+        this.crossref = crossref;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public void setHowpublished(String howpublished) {
+        this.howpublished = howpublished;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public void setJournal(String journal) {
+        this.journal = journal;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public void setPages(String pages) {
+        this.pages = pages;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
 }
