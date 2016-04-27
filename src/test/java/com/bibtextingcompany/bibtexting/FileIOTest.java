@@ -48,7 +48,7 @@ public class FileIOTest {
    
     @Test
     public void writeBibtexReturnsFalseIfUnsuccessful() {
-        assertFalse(FileIO.writeBibtex("\"", new ArrayList<Reference>()));
+        assertFalse(FileIO.writeBibtex("/>><<..*,", new ArrayList<Reference>()));
     }
     
     @Test
