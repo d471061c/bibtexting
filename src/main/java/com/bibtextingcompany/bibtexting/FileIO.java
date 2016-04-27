@@ -18,9 +18,6 @@ import java.util.Collection;
  */
 public final class FileIO {
 
-    private FileIO() {
-    }
-
     /**
      * Method deserializes a file into an object. If the file doesn´t exist the
      * method calls saveObjectIntoFile() to create the file. Makes sense at
@@ -63,7 +60,7 @@ public final class FileIO {
      * @param fileName Name of the file into which the object should be
      * serialized
      */
-    public static void saveObjectIntoFile(Object o, String fileName) {
+    public static boolean saveObjectIntoFile(Object o, String fileName) {
         ObjectOutputStream objectOutputStream = null;
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
@@ -71,7 +68,7 @@ public final class FileIO {
             objectOutputStream.writeObject(o);
             fileOutputStream.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return false;
         } finally {
             try {
                 if (objectOutputStream != null) {
@@ -79,9 +76,10 @@ public final class FileIO {
                     objectOutputStream.close();
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+               return false;
             }
         }
+        return true;
     }
 
     /**
@@ -89,7 +87,7 @@ public final class FileIO {
      *
      * @param filename Name of the file which content will be cleared
      */
-    public static void clearFile(String filename) {
+    public static boolean clearFile(String filename) {
         ObjectOutputStream objectOutputStream = null;
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(filename);
@@ -97,8 +95,9 @@ public final class FileIO {
             objectOutputStream.reset();
             fileOutputStream.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
     
     /**

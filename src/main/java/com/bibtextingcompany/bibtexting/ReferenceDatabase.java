@@ -57,7 +57,7 @@ public class ReferenceDatabase {
     }
 
     /**
-     * Adds an Article Object to the database and the file associated with it
+     * Adds a Reference Object to the database and the file associated with it
      *
      * 
      */
@@ -135,9 +135,9 @@ public class ReferenceDatabase {
         return referencemap;
     }
 
-    public void clearDatabase() {
+    public boolean clearDatabase() {
         this.referencemap = new HashMap();
-        FileIO.clearFile(filename);
+        return FileIO.clearFile(filename);
     }
 
     public Collection<Reference> getAll() {

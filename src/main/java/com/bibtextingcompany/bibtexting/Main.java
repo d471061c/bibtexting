@@ -2,6 +2,8 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
@@ -69,14 +71,7 @@ public class Main {
 //        String FILENAME = "DATABASE_TEST";
         ReferenceDatabase refDB = new ReferenceDatabase("DATABASE");
         ConsoleUI ui = new ConsoleUI(new ConsoleIO(), refDB);
-
-        
-        
-        
-        
-        
-        
-        
-        ui.run();   
+        ui.run();
+//        
     }
 }
