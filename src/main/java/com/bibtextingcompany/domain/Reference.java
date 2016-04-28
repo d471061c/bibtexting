@@ -10,9 +10,21 @@ public class Reference implements Serializable {
 
     public enum ReferenceType {
 
-        ARTICLE, BOOK, BOOKLET, CONFERENCE, INBOOK, INCOLLECTION, INPROCEEDINGS,
-        MANUAL, MASTERSTHESIS, MISC, PHDTHESIS, PROCEEDINGS, TECHREPORT, UNPUBLISHED
+        ARTICLE("Article"), BOOK("Book"), BOOKLET("Booklet"), CONFERENCE("Conference"), 
+        INBOOK("Inbook"), INCOLLECTION("Incollection"), INPROCEEDINGS("Inproceedings"),
+        MANUAL("Manual"), MASTERSTHESIS("Master's thesis"), MISC("Misc"), 
+        PHDTHESIS("PhD thesis"), PROCEEDINGS("Proceedings"), TECHREPORT("Tech report"), 
+        UNPUBLISHED("Unpublished");
+        
+        private final String name;
 
+        private ReferenceType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     private final ReferenceType referenceType;
@@ -79,17 +91,16 @@ public class Reference implements Serializable {
     public void setTag(String tag) {
         this.tag = tag;
     }
-    
-                
+
     public String getTitle() {
         return this.title;
     }
-    
+
     public Reference.ReferenceType getReferenceType() {
         return this.referenceType;
     }
 
-    public Reference (ReferenceType referenceType) {
+    public Reference(ReferenceType referenceType) {
         this.referenceType = referenceType;
         this.placeholderize();
     }

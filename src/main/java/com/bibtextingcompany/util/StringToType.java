@@ -1,6 +1,6 @@
 package com.bibtextingcompany.util;
 
-import com.bibtextingcompany.domain.Reference;
+import com.bibtextingcompany.domain.Reference.ReferenceType;
 
 /**
  * Converts a String to a matching Reference.ReferenceType 
@@ -12,29 +12,12 @@ public class StringToType {
      * @param input input from user
      * @return A matching Ref.type or NULL
      */
-     public static Reference.ReferenceType convert(String input) {
-        Reference.ReferenceType ref = null;
-        if (input.toLowerCase().contentEquals("article")) {
-            ref=Reference.ReferenceType.ARTICLE;
+     public static ReferenceType convert(String input) {  
+        for (ReferenceType referenceType : ReferenceType.values()) {
+            if (input.toLowerCase().contentEquals(referenceType.getName().toLowerCase())) {
+                return referenceType;
+            }
         }
-        else if (input.toLowerCase().contentEquals("book")) {
-            ref=Reference.ReferenceType.BOOK;
-        }
-        else if (input.toLowerCase().contentEquals("booklet")) {
-            ref=Reference.ReferenceType.BOOKLET;
-        }
-        else if (input.toLowerCase().contentEquals("conference")) {
-            ref=Reference.ReferenceType.CONFERENCE;
-        }
-        else if (input.toLowerCase().contentEquals("inbook")) {
-            ref=Reference.ReferenceType.INBOOK;
-        }
-        else if (input.toLowerCase().contentEquals("incollection")) {
-            ref=Reference.ReferenceType.INCOLLECTION;
-        }
-         else if (input.toLowerCase().contentEquals("inproceedings")) {
-            ref=Reference.ReferenceType.INPROCEEDINGS;
-        }
-        return ref;
+        return null;
     }
 }

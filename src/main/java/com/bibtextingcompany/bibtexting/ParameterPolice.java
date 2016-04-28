@@ -1,7 +1,5 @@
 package com.bibtextingcompany.bibtexting;
 
-import com.bibtextingcompany.util.Numeric;
-
 /**
  * ParameterPolice enforces BibteX friendly parsing of reference parameters.
  */
