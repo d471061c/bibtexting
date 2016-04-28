@@ -55,6 +55,9 @@ public class Reference implements Serializable {
     public final static int VOLUME = 22;
     public final static int YEAR = 23;
 
+    private String fullContent;
+    private boolean dumbReference;
+    
     private String address;         //0
     private String annote;          //1
     private String author;          //2
@@ -91,7 +94,19 @@ public class Reference implements Serializable {
     public void setTag(String tag) {
         this.tag = tag;
     }
-
+    
+    public boolean getDumb() {
+        return this.dumbReference;
+    }
+    
+    public void setDumb(boolean isDumb) {
+        this.dumbReference=isDumb;
+    }
+    
+    public void setFullContent(String content) {
+        this.fullContent=content;
+    }
+    
     public String getTitle() {
         return this.title;
     }
@@ -332,6 +347,9 @@ public class Reference implements Serializable {
 
     @Override
     public String toString() {
+        if (dumbReference) {
+            return this.fullContent;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("@").append(this.referenceType.toString().toLowerCase()).append("{").append(tag).append(",\n");
         if (this.address != null) {

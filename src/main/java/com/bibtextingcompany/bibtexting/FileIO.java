@@ -1,10 +1,12 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -119,6 +121,23 @@ public final class FileIO {
             return false;
         }
         return true;
+    }
+    
+     public static String readBibtex(String filename) {
+         StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename + ".bib"));
+            while (true) {
+                String line = reader.readLine();
+                if (line==null) {break;} else {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));}
+            }
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Reading bibtex failed!");
+        }
+        return sb.toString();
     }
     
     /**

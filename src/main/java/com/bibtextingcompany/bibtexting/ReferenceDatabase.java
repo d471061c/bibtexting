@@ -2,6 +2,7 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
 import com.bibtextingcompany.util.StringToType;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,14 @@ public class ReferenceDatabase {
             referencemap.put(reference.getTag(), reference);
         }
     }
+    
+    public void loadDatabaseFromList(List<Reference> references) {
+        referencemap = new HashMap<String, Reference>();
+        for (Reference reference : references) {
+            referencemap.put(reference.getTag(), reference);
+        }
+    }
+     
 
     public int numberOfEntries() {
         return references.size();

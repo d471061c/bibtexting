@@ -51,6 +51,7 @@ public class ConsoleUI {
         io.print("customize\n");
         io.print("exit\n");
         io.print("help\n");
+        io.print("load\n");
         io.print("view\n");
         
     }
@@ -62,6 +63,8 @@ public class ConsoleUI {
             return true;
         } else if (command.equals("view")) {
             view();
+        } else if (command.equals("load")) {
+            loadFromBibtex();
         } else if (command.equals("help")) {
             help();
         } else if (command.equals("add")) {
@@ -74,6 +77,13 @@ public class ConsoleUI {
             io.print("Invalid command; type help for a list of commands\n");
         }
         return false;
+    }
+    
+    private void loadFromBibtex() {
+        io.print("Filename to load> ");
+        String filename = io.readLine();
+        refDB.loadDatabaseFromList(BibReader.readToReference(FileIO.readBibtex(filename)));
+        io.print("Reading "+refDB.getAll().size()+" entries from "+filename+".bib... Done!\n");
     }
     
     private void chooseReferenceType() {
@@ -238,8 +248,8 @@ public class ConsoleUI {
             io.print("Writing to file failed\n");
         }
     }
-    
-      // asks user for a file name and tries to create a file with the specified name
+      
+      // asks user keywords to include and exclude and then creates a bibtex-file based on that criteria
     private void customCreate() {
         io.print("Create customized bib file.\nSeparate keywords with commas or spaces.\nA keyword with @ in front counts as reference type (e.g. @article).\n");
         io.print("Include keywords (blank = include all):  ");
