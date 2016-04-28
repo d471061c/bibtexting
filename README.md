@@ -5,9 +5,17 @@
 Ryhmä bibtexting - demo 3.5. klo 14!!
 ================
 
-Sprint Backlog Week 2:
+Definition of Done
 ----------------------
-https://drive.google.com/folderview?id=0B77redy3SinrZVNEdEc2NHRxd28&usp=sharing
+- enough backlog items done to reach minimum viable product
+- key features easyb tested
+- continuous integration implemented
+- test coverage 80%
+
+
+Sprint Backlog Week 3:
+----------------------
+https://docs.google.com/spreadsheets/d/1P_HL-fLnQzPEyZEujz_FZAQtJzQL_4erqm4RY7EkBoY/edit?usp=sharing
 
 Product Backlog
 ---------------
