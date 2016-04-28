@@ -5,7 +5,7 @@ import com.bibtextingcompany.domain.Reference;
 /**
  * Converts a String to a matching Reference.ReferenceType 
  */
-public class TypeToString {
+public class StringToType {
     
     /**
      * Checks if a string matches an existing Reference.ReferenceType

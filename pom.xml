@@ -61,12 +61,14 @@
                             <ignore>com.bibtextingcompany.bibtexting.ConsoleUI.*</ignore>
                             <ignore>com.bibtextingcompany.bibtexting.StubIO.*</ignore>
                             <ignore>com.bibtextingcompany.bibtexting.Main.*</ignore>
+                            <ignore>con.bibtextingcompany.util.WordUTF8.*</ignore>
                         </ignores>
                         <excludes>
                             <exclude>com/bibtextingcompany/bibtexting/ConsoleIO.class</exclude>
                             <exclude>com/bibtextingcompany/bibtexting/ConsoleUI.class</exclude>
                             <exclude>com/bibtextingcompany/bibtexting/StubIO.class</exclude>
                             <exclude>com/bibtextingcompany/bibtexting/Main.class</exclude>
+                            <exclude>com/bibtextingcompany/util/WordUTF8.class</exclude>
                         </excludes>
                     </instrumentation>
                     <formats>

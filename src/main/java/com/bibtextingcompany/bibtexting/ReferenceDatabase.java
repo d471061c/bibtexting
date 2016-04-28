@@ -1,7 +1,7 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
-import com.bibtextingcompany.util.TypeToString;
+import com.bibtextingcompany.util.StringToType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -165,7 +165,7 @@ public class ReferenceDatabase {
                 }
                 if (referenceFound && sb.length()>0) {
                    // System.out.println("Trying to match: "+sb.toString());
-                    Reference.ReferenceType ref = TypeToString.convert(sb.toString());
+                    Reference.ReferenceType ref = StringToType.convert(sb.toString());
                     if (ref!=null) {
                     //    System.out.println("Article type "+sb.toString()+" INCLUDED!");
                         includedReferences.add(ref);
@@ -195,7 +195,7 @@ public class ReferenceDatabase {
                 }
                 if (referenceFound && sb.length()>0) {
                    // System.out.println("Trying to match: "+sb.toString());
-                    Reference.ReferenceType ref = TypeToString.convert(sb.toString());
+                    Reference.ReferenceType ref = StringToType.convert(sb.toString());
                     if (ref!=null) {
                  //       System.out.println("Article type "+sb.toString()+" EXCLUDED!");
                         excludedReferences.add(ref);
