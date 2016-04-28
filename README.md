@@ -41,6 +41,8 @@ Asiakastapaamisajat:
 
 29.4. klo 15:40 
 
+3.5. klo 14:00 (demo)
+
 Ilmeisesti luokassa C221.
 
 Osallistujat:

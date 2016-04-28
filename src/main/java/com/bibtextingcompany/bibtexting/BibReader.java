@@ -12,6 +12,9 @@ import java.util.Scanner;
 public class BibReader {
 
     public static List<Reference> readToReference(String content) {
+        if (content.length()<10) {
+            return null;
+        }
         ArrayList<Reference> newReferences = new ArrayList<Reference>();
 
         StringBuilder sb = new StringBuilder();

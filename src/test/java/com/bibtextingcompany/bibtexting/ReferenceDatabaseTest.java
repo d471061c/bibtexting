@@ -1,6 +1,8 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,16 @@ public class ReferenceDatabaseTest {
     @After
     public void tearDown() {
         refDB.clearDatabase();
+    }
+    
+    @Test
+    public void testgetMatching() {
+        refDB.add(articleToBeAdded);
+        Collection<Reference> results = null;
+        results=refDB.getMatching("@inproceedings @article keskinen", "useless");
+        assertEquals(results.size(), 1);
+        results=refDB.getMatching("@inproceedings @article", "baseless");
+        assertEquals(results.size(), 3);
     }
 
     @Test
