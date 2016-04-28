@@ -246,6 +246,8 @@ public class ConsoleUI {
         
         if (!FileIO.writeBibtex(filename, refDB.getAll())) {
             io.print("Writing to file failed\n");
+        } else {
+            io.print("BibTeX file successfully created!\n");
         }
     }
       
