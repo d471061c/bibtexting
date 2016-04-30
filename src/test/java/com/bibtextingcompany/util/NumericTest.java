@@ -62,6 +62,9 @@ public class NumericTest {
         
         assertEquals(false, Numeric.confirmInteger(null));
         
+        assertEquals(true, Numeric.confirmInteger("-10"));
+        assertEquals(true, Numeric.confirmInteger("0"));
+        
     }
     
 }
