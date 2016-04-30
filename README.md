@@ -70,6 +70,3 @@ Userstories
 -----------
 https://github.com/d471061c/bibtexting/issues/2
 
-
-x
-
