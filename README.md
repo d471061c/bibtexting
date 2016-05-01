@@ -52,7 +52,7 @@ Tuomas Honkala - tuho@cs.helsinki.fi
 
 Eero Ojala - eero.ojala@helsinki.fi
 
-Kalle Belmo - 
+Kalle Belmo - cpastethat@gmail.com
 
 Jussi Viinikka - jussi.viinikka@gmail.com
 
