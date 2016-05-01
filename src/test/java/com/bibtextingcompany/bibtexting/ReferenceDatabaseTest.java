@@ -57,8 +57,15 @@ public class ReferenceDatabaseTest {
 
     @Test
     public void testAdd() {
+        
         refDB.add(articleToBeAdded);
-        assertEquals(articleToBeAdded, refDB.getReferencemap().get("4"));
+        Reference retrieved = null;
+        for (Reference ref : refDB.getAll()) {
+            if (ref.equals(articleToBeAdded)) {
+                retrieved=ref;
+            }
+        }
+        assertEquals(articleToBeAdded, retrieved);//refDB.getReferencemap().get("4"));
     }
 
     @Test

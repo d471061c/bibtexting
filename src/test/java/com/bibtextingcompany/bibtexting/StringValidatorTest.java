@@ -71,7 +71,7 @@ public class StringValidatorTest {
     @Test
     public void testScandic() {
         String input = "Äää Ö Å å";
-        String expResult = "\\\"{a}\\\"{a}\\\"{a} \\\"{o} \\AA \\aa";
+        String expResult = "\\\"{A}\\\"{a}\\\"{a} \\\"{o} \\AA \\aa";
         String result = StringValidator.Validate(input);
         
         System.out.println("Validate a Scandic String to Validator. Result: "+result);

@@ -2,18 +2,21 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference.ReferenceType;
 import com.bibtextingcompany.domain.Reference;
+import com.bibtextingcompany.util.FinePrint;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A command line based user interface.
  */
 public class ConsoleUI {
-    
+
     private final IO io;
     private final ReferenceDatabase refDB;
+    private ArrayList<String> debug;
 
     /**
      * Creates a new ConsoleUI object
@@ -25,6 +28,7 @@ public class ConsoleUI {
     public ConsoleUI(IO io, ReferenceDatabase refDB) {
         this.io = io;
         this.refDB = refDB;
+        this.debug=new ArrayList<String>();
     }
 
     /**
@@ -33,7 +37,7 @@ public class ConsoleUI {
      */
     public void run() {
         help();
-        
+
         while (true) {
             io.print("\n");
             io.print("> ");
@@ -43,7 +47,7 @@ public class ConsoleUI {
             }
         }
     }
-    
+
     private void help() {
         io.print("Available commands:\n");
         io.print("add\n");
@@ -51,9 +55,12 @@ public class ConsoleUI {
         io.print("customize\n");
         io.print("exit\n");
         io.print("help\n");
+        io.print("list\n");
         io.print("load\n");
         io.print("view\n");
-        
+        io.print("--------\n");
+        io.print(refDB.getAll().size()+" reference(s) in memory.\n");
+
     }
 
     // Returns true if the user wishes to end program execution, false otherwise.
@@ -65,6 +72,8 @@ public class ConsoleUI {
             view();
         } else if (command.equals("load")) {
             loadFromBibtex();
+        } else if (command.equals("list")) {
+            finePrintResults();
         } else if (command.equals("help")) {
             help();
         } else if (command.equals("add")) {
@@ -78,14 +87,14 @@ public class ConsoleUI {
         }
         return false;
     }
-    
+
     private void loadFromBibtex() {
         io.print("Filename to load> ");
         String filename = io.readLine();
         refDB.loadDatabaseFromList(BibReader.readToReference(FileIO.readBibtex(filename)));
-        io.print("Reading "+refDB.getAll().size()+" entries from "+filename+".bib... Done!\n");
+        io.print("Reading " + refDB.getAll().size() + " entries from " + filename + ".bib... Done!\n");
     }
-    
+
     private void chooseReferenceType() {
         viewTypes();
         String subcommand = io.readLine();
@@ -98,7 +107,7 @@ public class ConsoleUI {
             add(type);
         }
     }
-    
+
     private boolean validType(String subcommand) {
         int typeNumber = 0;
         try {
@@ -108,7 +117,7 @@ public class ConsoleUI {
         }
         return typeNumber >= 1 && typeNumber <= ReferenceType.values().length;
     }
-    
+
     private void viewTypes() {
         io.print("enter type number or back to return to main menu\n");
         ReferenceType[] types = ReferenceType.values();
@@ -117,7 +126,7 @@ public class ConsoleUI {
         }
         io.print("\n> ");
     }
-    
+
     private void add(ReferenceType type) {
         Reference reference = new Reference(type);
         String[] params = new String[24];
@@ -134,13 +143,13 @@ public class ConsoleUI {
             io.print("Error: one or more parameters were invalid. Reference was not saved.\n");
         }
     }
-    
+
     private String[] askParameters(Reference reference, boolean parametersRequired, String[] params) {
         String input;
         int parameterIndex;
         int length = getParameterArrayLength(reference, parametersRequired);
         String[] appendedParams = params;
-        
+
         for (int i = 0; i < length; i++) {
             parameterIndex = getParameterIndex(reference, parametersRequired, i);
             printParameterName(reference, parametersRequired, parameterIndex);
@@ -151,21 +160,21 @@ public class ConsoleUI {
         }
         return appendedParams;
     }
-    
+
     private int getParameterArrayLength(Reference reference, boolean parametersRequired) {
         if (parametersRequired) {
             return reference.requiredParameters().length;
         }
         return reference.optionalParameters().length;
     }
-    
+
     private int getParameterIndex(Reference reference, boolean parametersRequired, int i) {
         if (parametersRequired) {
             return reference.requiredParameters()[i];
         }
         return reference.optionalParameters()[i];
     }
-    
+
     private void printParameterName(Reference reference, boolean parametersRequired, int parameterIndex) {
         String message = "";
         if (!parametersRequired) {
@@ -173,7 +182,7 @@ public class ConsoleUI {
         }
         io.print(reference.paramNames[parameterIndex] + message + ": ");
     }
-    
+
     private boolean validateParameters(String[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i] != null) {
@@ -184,7 +193,7 @@ public class ConsoleUI {
         }
         return true;
     }
-    
+
     private boolean validateParameter(String parameter, int parameterIndex) {
         if (isParameterSupposedToBeANumber(parameterIndex)) {
             return DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
@@ -206,11 +215,11 @@ public class ConsoleUI {
             return DataValidator.Validate(parameter, DataValidator.TEXT) == DataValidator.TEXT;
         }
     }
-    
+
     private boolean isParameterSupposedToBeANumber(int parameterIndex) {
         return parameterIndex == Reference.NUMBER || parameterIndex == Reference.VOLUME || parameterIndex == Reference.YEAR;
     }
-    
+
     private boolean isParameterSupposedToBeARangeOfPages(int parameterIndex) {
         return parameterIndex == Reference.PAGES;
     }
@@ -221,37 +230,49 @@ public class ConsoleUI {
         String title = io.readLine();
         printResults(refDB.find(title));
     }
-    
+
     private void printResults(List<Reference> references) {
         if (references.isEmpty()) {
             io.print("No references found with the specified search terms!\n");
         }
-        
+
         for (Reference reference : references) {
             io.print(reference.toString());
         }
     }
-    
+
+    private void finePrintResults() {
+        if (refDB.getAll().isEmpty()) {
+            io.print("No references found with the specified search terms!\n");
+            debug.add("No references found with the specified search terms!");
+        } else {
+
+            for (Reference reference : refDB.getAll()) {
+                debug.add(FinePrint.process(reference, io));
+            }
+        }
+    }
+
     // asks user for a file name and tries to create a file with the specified name
     private void create() {
         io.print("File name: ");
         String filename = io.readLine();
-        
+
         String validatedFilename = FileIO.validateFilename(filename);
-        
+
         if (!validatedFilename.contentEquals(filename)) {
-            io.print("Filename corrected from "+filename+" to "+validatedFilename);
-            filename=validatedFilename;
+            io.print("Filename corrected from " + filename + " to " + validatedFilename);
+            filename = validatedFilename;
         }
-        
+
         if (!FileIO.writeBibtex(filename, refDB.getAll())) {
             io.print("Writing to file failed\n");
         } else {
             io.print("BibTeX file successfully created!\n");
         }
     }
-      
-      // asks user keywords to include and exclude and then creates a bibtex-file based on that criteria
+
+    // asks user keywords to include and exclude and then creates a bibtex-file based on that criteria
     private void customCreate() {
         io.print("Create customized bib file.\nSeparate keywords with commas or spaces.\nA keyword with @ in front counts as reference type (e.g. @article).\n");
         io.print("Include keywords (blank = include all):  ");
@@ -260,17 +281,21 @@ public class ConsoleUI {
         String exclude = io.readLine();
         io.print("File name: ");
         String filename = io.readLine();
-        
+
         String validatedFilename = FileIO.validateFilename(filename);
-        
+
         if (!validatedFilename.contentEquals(filename)) {
-            io.print("Filename corrected from "+filename+" to "+validatedFilename);
-            filename=validatedFilename;
+            io.print("Filename corrected from " + filename + " to " + validatedFilename);
+            filename = validatedFilename;
         }
-        
+
         if (!FileIO.writeBibtex(filename, refDB.getMatching(include, exclude))) {
             io.print("Writing to file failed\n");
         }
     }
-    
+
+    public ArrayList<String> getDebug() {
+        finePrintResults();
+        return this.debug;
+    }
 }

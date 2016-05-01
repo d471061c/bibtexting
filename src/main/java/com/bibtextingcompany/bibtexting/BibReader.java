@@ -7,10 +7,17 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
+ * Reads a properly formatted BibteX file into Bibtexting reference objects.
+ * These objects will get "dumbed down", i.e. they will not have proper parameters,
+ * only a recreation of the original toString().
  */
 public class BibReader {
 
+    /**
+     * * Reads a properly formatted BibteX file into Bibtexting reference objects.
+     * @param content A string read from a BibteX file.
+     * @return  List of <Reference>s
+     */
     public static List<Reference> readToReference(String content) {
         if (content.length()<10) {
             return null;

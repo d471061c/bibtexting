@@ -71,7 +71,7 @@ public class ReferenceDatabase {
      * 
      */
     public void add(Reference reference) {
-        reference.setTag(String.valueOf(this.numberOfEntries() + 1)); //should be some better algo
+        reference.setTag(String.valueOf(System.currentTimeMillis()));//this.numberOfEntries() + 1)); //should be some better algo
         if (!references.contains(reference)) {
             references.add(reference);
             FileIO.saveObjectIntoFile(references, filename);

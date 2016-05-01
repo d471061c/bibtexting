@@ -44,7 +44,9 @@ public class StringValidator {
             
             if (input.charAt(i)<=127) {
                 sb.append(input.charAt(i));
-            } else if (input.charAt(i)=='Ä' || input.charAt(i)=='ä' || input.charAt(i)=='ã') {      // As far as I can tell there is no code for a capital 'Ä' or 'Ö'
+            } else if (input.charAt(i)=='Ä') {
+                sb.append("\\\"{A}");
+            } else if (input.charAt(i)=='ä' || input.charAt(i)=='ã') {      // As far as I can tell there is no code for a capital 'Ä' or 'Ö'
                 sb.append("\\\"{a}");
             } else if (input.charAt(i)=='Ö' || input.charAt(i)=='ö') {
                 sb.append("\\\"{o}");
