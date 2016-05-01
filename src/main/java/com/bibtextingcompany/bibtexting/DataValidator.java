@@ -146,20 +146,7 @@ public class DataValidator {
      * @return TRUE if a single number found, FALSE otherwise
      */
     public static boolean ValidateNumber(String input) {
-        boolean validNumber = true;
-
-        if (input.length() > 9) {
-            return false;
-        }
-
-        for (int i = 0; i < input.length(); i++) {
-            char current = input.charAt(i);
-            if (current < '0' || current > '9') {
-                validNumber = false;
-            }
-        }
-
-        return validNumber;
+        return input.length() <= 9 && input.matches(".*\\d+.*");
     }
 
     /**
@@ -169,17 +156,7 @@ public class DataValidator {
      * @return TRUE if alphabet found, FALSE otherwise.
      */
     public static boolean ValidateText(String input) {
-        boolean containsAlphabet = false;
-
-        for (int i = 0; i < input.length(); i++) {
-            char current = input.charAt(i);
-            if ((current >= 'a' && current <= 'z')
-                    || (current >= 'A' && current <= 'Z')) {
-                containsAlphabet = true;
-            }
-        }
-
-        return containsAlphabet;
+        return input.matches(".*[a-zA-Z]+.*");
     }
 
     /**
@@ -189,13 +166,7 @@ public class DataValidator {
      * @return Input with all spaces removed
      */
     public static String removeSpaces(String input) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            if (input.charAt(i) != ' ') {
-                sb.append(input.charAt(i));
-            }
-        }
-        return sb.toString();
+        return input.replaceAll("\\s", "");
     }
 
     /**
