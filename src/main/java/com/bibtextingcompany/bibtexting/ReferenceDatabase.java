@@ -1,6 +1,7 @@
 package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
+import com.bibtextingcompany.domain.Reference.ReferenceType;
 import com.bibtextingcompany.util.StringToType;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -39,14 +40,13 @@ public class ReferenceDatabase {
             referencemap.put(reference.getTag(), reference);
         }
     }
-    
+
     public void loadDatabaseFromList(List<Reference> references) {
         referencemap = new HashMap<String, Reference>();
         for (Reference reference : references) {
             referencemap.put(reference.getTag(), reference);
         }
     }
-     
 
     public int numberOfEntries() {
         return references.size();
@@ -68,7 +68,7 @@ public class ReferenceDatabase {
     /**
      * Adds a Reference Object to the database and the file associated with it
      *
-     * 
+     * @param reference Reference which is added to the database.
      */
     public void add(Reference reference) {
         reference.setTag(String.valueOf(System.currentTimeMillis()));//this.numberOfEntries() + 1)); //should be some better algo
@@ -88,50 +88,47 @@ public class ReferenceDatabase {
      * @return A List of Articles with a specific title.
      */
     public List<Reference> find(String title) {
-        
         String searchTitle = trimAndLowercaseString(title);
         List<Reference> list = new ArrayList();
-       // System.out.println("search title: "+searchTitle);
-        String starSearch = searchTitle;
-
-        if (starSearch.contains("*")) {
-            StringBuilder sb = new StringBuilder("");
-            for (int i = 0; i < searchTitle.length(); i++) {
-                if (searchTitle.charAt(i) != '*') {
-                    sb.append(searchTitle.charAt(i));
-                } else {
-                    starSearch = sb.toString();
-                    break;
-                }
-            }
-        } else {
-            starSearch = null;
+        if (searchTitle.contains("*")) {
+            searchTitle = getStarSearchString(searchTitle);
         }
-      //  System.out.println("find: "+searchTitle);
+        return search(searchTitle);
+    }
+
+    private String getStarSearchString(String searchTitle) {
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < searchTitle.length(); i++) {
+            if (searchTitle.charAt(i) != '*') {
+                sb.append(searchTitle.charAt(i));
+            } else {
+                break;
+            }
+        }
+        return sb.toString();
+    }
+
+    private List<Reference> search(String searchTitle) {
+        List<Reference> results = new ArrayList();
         for (Reference reference : referencemap.values()) {
-        //    System.out.println("Ref: "+reference.getTitle());
             String referenceTitle = trimAndLowercaseString(reference.getTitle());
-            if (referenceTitle.equals(searchTitle)) {
-                list.add(reference);
-            } else if (starSearch != null) {
-                if (referenceTitle.contains(starSearch)) {
-                    list.add(reference);
-                }
+            if (referenceTitle.contains(searchTitle)) {
+                results.add(reference);
             }
 
         }
-        return list;
+        return results;
     }
 
     private String trimAndLowercaseString(String string) {
         String trimmed = string.trim();
         String lowercased = trimmed.toLowerCase();
-        
+
 //        StringBuilder sb = new StringBuilder(lowercased);
-        lowercased=lowercased.replace("ä", "\\\"{a}");
-        lowercased=lowercased.replace("ö", "\\\"{o}");
-        lowercased=lowercased.replace("å", "\\aa");
-        
+        lowercased = lowercased.replace("ä", "\\\"{a}");
+        lowercased = lowercased.replace("ö", "\\\"{o}");
+        lowercased = lowercased.replace("å", "\\aa");
+
         return lowercased;
     }
 
@@ -152,132 +149,93 @@ public class ReferenceDatabase {
     public Collection<Reference> getAll() {
         return referencemap.values();
     }
+
+    public Collection<Reference> getMatching(String include, String exclude) {      
+        HashSet<ReferenceType> includedReferences = new HashSet<ReferenceType>();
+        HashSet<String> includedKeywords = new HashSet<String>();
+        HashSet<ReferenceType> excludedReferences = new HashSet<ReferenceType>();
+        HashSet<String> excludedKeywords = new HashSet<String>();
+
+        addKeywordsAndReferences(include, includedReferences, includedKeywords);
+        addKeywordsAndReferences(exclude, excludedReferences, excludedKeywords);
+        boolean includeAllRefs = includedReferences.size() < 1;
+        boolean includeAllWords = includedKeywords.size() < 1;
+
+        return this.findMatchingReferences(includedReferences, excludedReferences, 
+                includedKeywords, excludedKeywords, includeAllRefs, includeAllWords);
+    }
+
+    private void addKeywordsAndReferences(String string, HashSet<ReferenceType> references, HashSet<String> keywords) {
+        StringBuilder sb = new StringBuilder();
+        boolean referenceFound = false;
+
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == '@') {
+                referenceFound = true;
+            } else if (string.charAt(i) == ' ' || string.charAt(i) == ',' || i == string.length() - 1) {
+                if (i == string.length() - 1) {
+                    sb.append(string.charAt(i));
+                }
+                addKeywordOrReference(referenceFound, sb, references, keywords);
+                sb = new StringBuilder();
+            } else {
+                sb.append(string.charAt(i));
+            }
+
+        }
+    }
+
+    private void addKeywordOrReference(boolean referenceFound, StringBuilder sb, HashSet<ReferenceType> references, HashSet<String> keywords) {
+        if (referenceFound && sb.length() > 0) {
+            Reference.ReferenceType ref = StringToType.convert(sb.toString());
+            if (ref != null) {
+                references.add(ref);
+            }
+            referenceFound = false;
+
+        } else if (sb.length() > 0) {
+            keywords.add(sb.toString());
+        }
+    }
+
+    private boolean keywordIncludedInHashSet(HashSet<String> keywords, Reference reference) {
+        for (String word : keywords) {
+            if (reference.toString().toLowerCase().contains(word.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
     
-    public Collection<Reference> getMatching(String include, String exclude) {
+    private Collection<Reference> findMatchingReferences(HashSet<ReferenceType> includedReferences,
+            HashSet<ReferenceType> excludedReferences, HashSet<String> includedKeywords, 
+            HashSet<String> excludedKeywords, boolean includeAllRefs, 
+            boolean includeAllWords) {
         
         Collection<Reference> matchingReferences = new ArrayList<Reference>();
         
-        HashSet<Reference.ReferenceType> includedReferences = new HashSet<Reference.ReferenceType>();
-        HashSet<String> includedKeywords = new HashSet<String>();
-        HashSet<Reference.ReferenceType> excludedReferences = new HashSet<Reference.ReferenceType>();
-        HashSet<String> excludedKeywords = new HashSet<String>();
-        
-        StringBuilder sb = new StringBuilder();
-        boolean referenceFound = false;
-        
-        for (int i=0; i<include.length(); i++) {
-            if (include.charAt(i)=='@') {
-                referenceFound=true;
-            } else if (include.charAt(i)==' ' || include.charAt(i)==',' || i==include.length()-1) {
-                if (i==include.length()-1) {
-                    sb.append(include.charAt(i));
-                }
-                if (referenceFound && sb.length()>0) {
-                   // System.out.println("Trying to match: "+sb.toString());
-                    Reference.ReferenceType ref = StringToType.convert(sb.toString());
-                    if (ref!=null) {
-                    //    System.out.println("Article type "+sb.toString()+" INCLUDED!");
-                        includedReferences.add(ref);
-                    }
-                    referenceFound=false;
-                    
-                } else if (sb.length()>0) {
-             //       System.out.println("word added: "+sb.toString());
-                    includedKeywords.add(sb.toString());
-                }
-                sb = new StringBuilder();
-            } else {
-                sb.append(include.charAt(i));
-            }
-            
-        }
-        
-        referenceFound = false;
-        sb = new StringBuilder();
-        
-        for (int i=0; i<exclude.length(); i++) {
-            if (exclude.charAt(i)=='@') {
-                referenceFound=true;
-            } else if (exclude.charAt(i)==' ' || exclude.charAt(i)==',' || i==exclude.length()-1) {
-                 if (i==exclude.length()-1) {
-                    sb.append(exclude.charAt(i));
-                }
-                if (referenceFound && sb.length()>0) {
-                   // System.out.println("Trying to match: "+sb.toString());
-                    Reference.ReferenceType ref = StringToType.convert(sb.toString());
-                    if (ref!=null) {
-                 //       System.out.println("Article type "+sb.toString()+" EXCLUDED!");
-                        excludedReferences.add(ref);
-                    }
-                    referenceFound=false;
-                    
-                } else if (sb.length()>0) {
-              //      System.out.println("word excluded: "+sb.toString());
-                    excludedKeywords.add(sb.toString());
-                }
-                sb = new StringBuilder();
-            } else {
-                sb.append(exclude.charAt(i));
-            }
-            
-        }
-        
-        boolean includeAllRefs=false;
-        if (includedReferences.size()<1) {
-            includeAllRefs=true;
-        }
-        boolean includeAllWords=false;
-        if (includedKeywords.size()<1) {
-            includeAllWords=true;
-        }
-        System.out.println("Incl refs: "+includedReferences.size()+"; excluded refs: "+excludedReferences.size()+", keys inc: "+includedKeywords.toString()+", excluded keys: "+excludedKeywords.toString());
         for (Reference reference : referencemap.values()) {
-            boolean notExcluded=true;
-            
-            if (excludedReferences.contains(reference.getReferenceType())) {
-                notExcluded=false;
+            if (excludedReferences.contains(reference.getReferenceType()) || 
+                    keywordIncludedInHashSet(excludedKeywords, reference)) {
                 continue;
             }
-            for (String word : excludedKeywords) {
-            
-             if (reference.toString().toLowerCase().contains(word.toLowerCase())) {
-                notExcluded=false;
-                 //System.out.println("WORD: "+word+" excluded!");
-                continue;
-            }
-            }
-            
-            boolean included=false;
-            
-            if (notExcluded && (includeAllRefs || includedReferences.contains(reference.getReferenceType()))) {
-                
+
+            boolean included = false;
+
+            if (includeAllRefs || includedReferences.contains(reference.getReferenceType())) {
                 if (!includeAllWords) {
-                    
-                    for (String word : includedKeywords) {
-            
-                        if (reference.toString().toLowerCase().contains(word.toLowerCase())) {
-                            
-                           // System.out.println("WORD: "+word+" included!");
-                            included=true;
-                        continue;
-                        }
-                    }
-                    
-                 } else {
-                    included=true;
+                    included = this.keywordIncludedInHashSet(includedKeywords, reference);
+                } else {
+                    included = true;
                 }
-            
-        }
-            if (included && notExcluded) {
-                System.out.println(reference.toString());
-                matchingReferences.add(reference);
-            } else {
-                //System.out.println(reference.getTitle()+" excluded!!");
+
             }
             
-        
-        
-    }
+            if (included) {
+                matchingReferences.add(reference);
+            }
+        }
         return matchingReferences;
+    
     }
 }
