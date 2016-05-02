@@ -17,10 +17,18 @@ public class ReferenceDatabaseTest {
 
     ReferenceDatabase refDB;
     Reference articleToBeAdded;
+    Reference ref1;
+    Reference ref2;
+    Reference ref3;
+            
     final static String FILENAME = "DATABASE_TEST";
 
     public ReferenceDatabaseTest() {
         articleToBeAdded = ReferenceCreator.createArticle("T. S. Garp", "BibteX and You", "2014", "Useless Proceedings in Computer Science", "6");
+    ref1=ReferenceCreator.createArticle("Yölevi Äänekoski", "Validating Strings in BibteX", "1995", "Useless Proceedings in Computer Science", "3");
+        ref2=ReferenceCreator.createBook("John and Jane Doe", "Editor123" , "Validating Strings in BibteX", "Tammi", "1993");
+        ref3=ReferenceCreator.createInproceedings("Janne Keskinen", "Täällä Pohjantähden Alla", "Booktitle123", "2005");
+    
     }
 
     @BeforeClass
@@ -47,12 +55,45 @@ public class ReferenceDatabaseTest {
     
     @Test
     public void testgetMatching() {
+        Map<String, Reference> refMap = new HashMap();
+        refDB = new ReferenceDatabase(FILENAME, refMap);
+        refDB.add(ref1);
+        refDB.add(ref2);
+        refDB.add(ref3);
         refDB.add(articleToBeAdded);
         Collection<Reference> results = null;
-        results=refDB.getMatching("@inproceedings @article keskinen", "useless");
-        assertEquals(results.size(), 1);
-        results=refDB.getMatching("@inproceedings @article", "baseless");
-        assertEquals(results.size(), 3);
+        results=refDB.getMatching("@inproceedings @article Keskinen", "useless");
+        System.out.println("Results : "+results.size()+", ref-db size: "+refDB.getAll().size());
+        for (Reference ref: refDB.getAll()) {
+            System.out.println(ref.toString());
+        }
+        System.out.println("-----------------");
+        boolean oliKeskinen=false;
+        boolean oliUseless=false;
+        for (Reference ref : results) {
+            if (ref.toString().toLowerCase().contains("keskinen")) {
+                oliKeskinen=true;
+            }
+            if (ref.toString().toLowerCase().contains("useless")) {
+                oliUseless=true;
+            }
+            System.out.println("!!!");
+            System.out.println(ref.toString());
+        }
+        assertEquals(oliKeskinen,true);
+        assertEquals(oliUseless, false);
+//        
+//        results=refDB.getMatching("@inproceedings @article", "baseless");
+//        
+//        for (Reference ref : results) {
+//            if (ref.toString().toLowerCase().contains("keskinen")) {
+//                oliKeskinen=true;
+//            }
+//            if (ref.toString().toLowerCase().contains("useless")) {
+//                oliUseless=true;
+//            }
+//        }
+//        assertEquals(results.size(), 2);
     }
 
     @Test
