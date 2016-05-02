@@ -8,78 +8,104 @@ import java.util.Scanner;
 
 /**
  * Reads a properly formatted BibteX file into Bibtexting reference objects.
- * These objects will get "dumbed down", i.e. they will not have proper parameters,
- * only a recreation of the original toString().
+ * These objects will get "dumbed down", i.e. they will not have proper
+ * parameters, only a recreation of the original toString().
  */
 public class BibReader {
 
+    private static boolean newRefFound;
+    private static boolean refTypeDetected;
+    private static boolean refTagDetected;
+    private static boolean refTitleDetected;
+    private static boolean titleWritten;
+    private static StringBuilder sbFullContent;
+    private static String tag;
+    private static String title;
+
     /**
-     * * Reads a properly formatted BibteX file into Bibtexting reference objects.
+     * * Reads a properly formatted BibteX file into Bibtexting reference
+     * objects.
+     *
      * @param content A string read from a BibteX file.
-     * @return  List of <Reference>s
+     * @return List of <Reference>s
      */
     public static List<Reference> readToReference(String content) {
-        if (content.length()<10) {
-            return null;
-        }
         ArrayList<Reference> newReferences = new ArrayList<Reference>();
-
         StringBuilder sb = new StringBuilder();
-        StringBuilder sbFullContent = new StringBuilder();
-        boolean newRefFound = false;
-        boolean refTypeDetected = false;
-        boolean refTagDetected = false;
-        boolean refTitleDetected = false;
-        boolean titleWritten = false;
+        initReader();
         Reference.ReferenceType refType = null;
-        String tag = "";
-        String title = "";
 
         System.out.println(content);
+        //    System.out.println(newReferences.size()+" lisätty");
+        return contentParser(content, sb, refType, newReferences);
+    }
 
+    private static List<Reference> contentParser(String content, StringBuilder sb,
+            Reference.ReferenceType refType, ArrayList<Reference> newReferences) {
         for (int i = 0; i < content.length(); i++) {
 
             if (content.charAt(i) == '@' || i == content.length() - 1) {
-                newRefFound = true;
                 if (sbFullContent.length() > 1) {
-                //    System.out.println("Yritetään kirjoittaa...\n"+sbFullContent.toString());
+                    //    System.out.println("Yritetään kirjoittaa...\n"+sbFullContent.toString());
+                    if (!fetchTitle()) return null;
 
-                    Scanner scanner = new Scanner(sbFullContent.toString());
-                    int i1 = sbFullContent.indexOf("title");
-                    int i2 = sbFullContent.indexOf("\"", i1 - 1);
-                    title = sbFullContent.substring(i2 + 1, sbFullContent.indexOf("\",", i2));
-                 //   System.out.println("titleksi saatiin: "+title);
-
-                    Reference recreation = new Reference(refType);
-                    recreation.setDumb(true);
-                    recreation.setTag(tag);
-                    recreation.setTitle(title);
-                    recreation.setFullContent(sbFullContent.toString());
-                    newReferences.add(recreation);
-                    sbFullContent = new StringBuilder();
-                    refTypeDetected = false;
-                    refTagDetected = false;
-                    refTitleDetected = false;
-                    titleWritten = false;
-                    title = "";
-                    tag = "";
+                    newReferences.add(buildDumbReference(refType));
                 }
-            } else if (newRefFound && !refTypeDetected && content.charAt(i) == '{') {
-                refTypeDetected = true;
-                refType = StringToType.convert(sb.toString());
+            } else if (!refTypeDetected && content.charAt(i) == '{') {
+                refType = fetchRefType(sb);
                 sb = new StringBuilder();
             } else if (!refTagDetected && content.charAt(i) != ',') {
                 sb.append(content.charAt(i));
             } else if (!refTagDetected) {
-                tag = sb.toString() + "-dumb";
+                fetchTag(sb);
                 sb = new StringBuilder();
-                refTagDetected = true;
             }
 
             sbFullContent.append(content.charAt(i));
         }
-
-        //    System.out.println(newReferences.size()+" lisätty");
         return newReferences;
     }
+
+    private static void fetchTag(StringBuilder sb) {
+        refTagDetected = true;
+        tag = sb.toString() + "-dumb";
+    }
+
+    private static Reference.ReferenceType fetchRefType(StringBuilder sb) {
+        refTypeDetected = true;
+        Reference.ReferenceType rT = StringToType.convert(sb.toString());
+        return rT;
+    }
+
+    private static boolean fetchTitle() {
+        int i1 = sbFullContent.indexOf("title");
+        int i2 = sbFullContent.indexOf("\"", i1 - 1);
+        if (i1 == -1) {
+            return false;
+        }
+        title = sbFullContent.substring(i2 + 1, sbFullContent.indexOf("\",", i2));
+        //   System.out.println("titleksi saatiin: "+title);
+        return true;
+    }
+
+    private static void initReader() {
+        refTypeDetected = false;
+        refTagDetected = false;
+        refTitleDetected = false;
+        titleWritten = false;
+        sbFullContent = new StringBuilder();
+        tag = "";
+        title = "";
+    }
+
+    private static Reference buildDumbReference(Reference.ReferenceType refType) {
+        Reference recreation = new Reference(refType);
+        recreation.setDumb(true);
+        recreation.setTag(tag);
+        recreation.setTitle(title);
+        recreation.setFullContent(sbFullContent.toString());
+        initReader();
+        return recreation;
+    }
+
 }
