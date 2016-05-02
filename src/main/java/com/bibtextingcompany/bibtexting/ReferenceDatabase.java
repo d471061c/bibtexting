@@ -3,7 +3,6 @@ package com.bibtextingcompany.bibtexting;
 import com.bibtextingcompany.domain.Reference;
 import com.bibtextingcompany.domain.Reference.ReferenceType;
 import com.bibtextingcompany.util.StringToType;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

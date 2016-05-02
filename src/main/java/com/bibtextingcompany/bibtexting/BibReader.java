@@ -35,8 +35,6 @@ public class BibReader {
         String tag = "";
         String title = "";
 
-        System.out.println(content);
-
         for (int i = 0; i < content.length(); i++) {
 
             if (content.charAt(i) == '@' || i == content.length() - 1) {
