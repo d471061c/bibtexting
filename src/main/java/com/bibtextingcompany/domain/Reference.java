@@ -2,7 +2,6 @@ package com.bibtextingcompany.domain;
 
 import com.bibtextingcompany.bibtexting.ParameterPolice;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 import com.bibtextingcompany.util.Numeric;
 
@@ -355,7 +354,7 @@ public class Reference implements Serializable {
      * @throws IllegalAccessException 
      */
     private void appendFieldDescriptor(StringBuilder sb, String fieldName) throws NoSuchFieldException, IllegalAccessException {
-        Object value = getClass().getField(fieldName).get(this);
+        Object value = getClass().getDeclaredField(fieldName).get(this);
         if (value != null) {
             sb.append(String.format("    %s  = \"%s\",\n", fieldName, value.toString()));
         }
