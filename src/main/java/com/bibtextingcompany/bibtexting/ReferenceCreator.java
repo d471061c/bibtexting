@@ -2,8 +2,14 @@ package com.bibtextingcompany.bibtexting;
 
 import com.bibtextingcompany.domain.Reference;
 
-
+/**
+ * Class for easier creation of references for tests.
+ * 
+ * @author joqtyyppi
+ */
 public class ReferenceCreator {
+
+
     public static Reference createArticle(String author, String title, String year, String journal, String volume) {
         Reference reference = new Reference(Reference.ReferenceType.ARTICLE);
         String[] params = new String[24];
@@ -16,6 +22,7 @@ public class ReferenceCreator {
         return reference;
     }
     
+
     public static Reference createBook(String author, String editor, String title, String publisher, String year) {
         Reference reference = new Reference(Reference.ReferenceType.BOOK);
         String[] params = new String[24];

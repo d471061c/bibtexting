@@ -12,10 +12,13 @@ Definition of Done
 - continuous integration implemented
 - test coverage 80%
 
-
-Sprint Backlog Week 3:
+Dokumentti projektin kulusta:
 ----------------------
-https://docs.google.com/spreadsheets/d/1P_HL-fLnQzPEyZEujz_FZAQtJzQL_4erqm4RY7EkBoY/edit?usp=sharing
+https://docs.google.com/document/d/1lamrB0mJvsy2sY5TR0NdMijNZoWru04uZONENCsXCe8/edit#
+
+Sprint Backlog Week 4:
+----------------------
+https://docs.google.com/spreadsheets/d/1Do_iJk_x-iPDLQ0jgcxhNCJilmrk58axYgA4WG8D-zI/edit?usp=sharing
 
 Product Backlog
 ---------------

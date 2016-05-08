@@ -3,10 +3,8 @@ package com.bibtextingcompany.bibtexting;
 import com.bibtextingcompany.domain.Reference.ReferenceType;
 import com.bibtextingcompany.domain.Reference;
 import com.bibtextingcompany.util.FinePrint;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ public class ConsoleUI {
 
     private final IO io;
     private final ReferenceDatabase refDB;
-    private ArrayList<String> debug;
+    private final ArrayList<String> debug;
 
     /**
      * Creates a new ConsoleUI object
@@ -28,7 +26,7 @@ public class ConsoleUI {
     public ConsoleUI(IO io, ReferenceDatabase refDB) {
         this.io = io;
         this.refDB = refDB;
-        this.debug=new ArrayList<String>();
+        this.debug = new ArrayList<String>();
     }
 
     /**
@@ -59,7 +57,7 @@ public class ConsoleUI {
         io.print("load\n");
         io.print("view\n");
         io.print("--------\n");
-        io.print(refDB.getAll().size()+" reference(s) in memory.\n");
+        io.print(refDB.getAll().size() + " reference(s) in memory.\n");
 
     }
 
@@ -198,19 +196,8 @@ public class ConsoleUI {
         if (isParameterSupposedToBeANumber(parameterIndex)) {
             return DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
         } else if (isParameterSupposedToBeARangeOfPages(parameterIndex)) {
-            boolean singleNumber = false;
-            boolean rangeOfNumbers = false;
-            if (DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS) {
-                rangeOfNumbers = true;
-            }
-            if (DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER) {
-                singleNumber = true;
-            }
-            if (rangeOfNumbers || singleNumber) {
-                return true;
-            }
-            return false;
-            //return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS;
+            return DataValidator.Validate(parameter, DataValidator.RANGE_OF_NUMBERS) == DataValidator.RANGE_OF_NUMBERS
+                    || DataValidator.Validate(parameter, DataValidator.SINGLE_NUMBER) == DataValidator.SINGLE_NUMBER;
         } else { // else it's supposed to be a regular string
             return DataValidator.Validate(parameter, DataValidator.TEXT) == DataValidator.TEXT;
         }
@@ -256,16 +243,22 @@ public class ConsoleUI {
     // asks user for a file name and tries to create a file with the specified name
     private void create() {
         io.print("File name: ");
-        String filename = io.readLine();
+        String filename = validateFilename(io.readLine());
+        createBibtexFile(filename, refDB.getAll());
+    }
 
+    private String validateFilename(String filename) {
         String validatedFilename = FileIO.validateFilename(filename);
 
         if (!validatedFilename.contentEquals(filename)) {
             io.print("Filename corrected from " + filename + " to " + validatedFilename);
-            filename = validatedFilename;
+            return validatedFilename;
         }
-
-        if (!FileIO.writeBibtex(filename, refDB.getAll())) {
+        return filename;
+    }
+    
+    private void createBibtexFile(String filename, Collection<Reference> references) {
+        if (!FileIO.writeBibtex(filename, references)) {
             io.print("Writing to file failed\n");
         } else {
             io.print("BibTeX file successfully created!\n");
@@ -280,18 +273,8 @@ public class ConsoleUI {
         io.print("Exclude keywords (blank = exclude nothing):  ");
         String exclude = io.readLine();
         io.print("File name: ");
-        String filename = io.readLine();
-
-        String validatedFilename = FileIO.validateFilename(filename);
-
-        if (!validatedFilename.contentEquals(filename)) {
-            io.print("Filename corrected from " + filename + " to " + validatedFilename);
-            filename = validatedFilename;
-        }
-
-        if (!FileIO.writeBibtex(filename, refDB.getMatching(include, exclude))) {
-            io.print("Writing to file failed\n");
-        }
+        String filename = validateFilename(io.readLine());
+        createBibtexFile(filename, refDB.getMatching(include, exclude));
     }
 
     public ArrayList<String> getDebug() {

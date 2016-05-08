@@ -35,6 +35,7 @@ public class BibReader {
         initReader();
         Reference.ReferenceType refType = null;
 
+
         System.out.println(content);
         //    System.out.println(newReferences.size()+" lisätty");
         return contentParser(content, sb, refType, newReferences);
@@ -42,6 +43,7 @@ public class BibReader {
 
     private static List<Reference> contentParser(String content, StringBuilder sb,
             Reference.ReferenceType refType, ArrayList<Reference> newReferences) {
+
         for (int i = 0; i < content.length(); i++) {
 
             if (content.charAt(i) == '@' || i == content.length() - 1) {
