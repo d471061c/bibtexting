@@ -14,7 +14,7 @@ Definition of Done
 
 Dokumentti projektin kulusta:
 ----------------------
-https://docs.google.com/document/d/1lamrB0mJvsy2sY5TR0NdMijNZoWru04uZONENCsXCe8/edit#
+https://docs.google.com/document/d/1lamrB0mJvsy2sY5TR0NdMijNZoWru04uZONENCsXCe8/edit?usp=sharing
 
 Sprint Backlog Week 4:
 ----------------------
