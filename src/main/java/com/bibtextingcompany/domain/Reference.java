@@ -2,7 +2,6 @@ package com.bibtextingcompany.domain;
 
 import com.bibtextingcompany.bibtexting.ParameterPolice;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 import com.bibtextingcompany.util.Numeric;
 
@@ -345,6 +344,22 @@ public class Reference implements Serializable {
         this.setTag("placeholder_tag");
     }
 
+    /**
+     * If named field has non-null value appends the field name and its value
+     * to given StringBuilder.
+     * 
+     * @param sb
+     * @param fieldName
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException 
+     */
+    private void appendFieldDescriptor(StringBuilder sb, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        Object value = getClass().getDeclaredField(fieldName).get(this);
+        if (value != null) {
+            sb.append(String.format("    %s  = \"%s\",\n", fieldName, value.toString()));
+        }
+    }
+    
     @Override
     public String toString() {
         if (dumbReference) {
@@ -352,75 +367,35 @@ public class Reference implements Serializable {
         }
         StringBuilder sb = new StringBuilder();
         sb.append("@").append(this.referenceType.toString().toLowerCase()).append("{").append(tag).append(",\n");
-        if (this.address != null) {
-            sb.append("    address  = \"").append(this.address).append("\",\n");
+        
+        try {
+            appendFieldDescriptor(sb, "address");
+            appendFieldDescriptor(sb, "annote");
+            appendFieldDescriptor(sb, "author");
+            appendFieldDescriptor(sb, "booktitle");
+            appendFieldDescriptor(sb, "chapter");
+            appendFieldDescriptor(sb, "crossref");
+            appendFieldDescriptor(sb, "edition");
+            appendFieldDescriptor(sb, "editor");
+            appendFieldDescriptor(sb, "howpublished");
+            appendFieldDescriptor(sb, "institution");
+            appendFieldDescriptor(sb, "journal");
+            appendFieldDescriptor(sb, "key");
+            appendFieldDescriptor(sb, "month");
+            appendFieldDescriptor(sb, "note");
+            appendFieldDescriptor(sb, "number");
+            appendFieldDescriptor(sb, "pages");
+            appendFieldDescriptor(sb, "publisher");
+            appendFieldDescriptor(sb, "school");
+            appendFieldDescriptor(sb, "series");
+            appendFieldDescriptor(sb, "title");
+            appendFieldDescriptor(sb, "type");
+            appendFieldDescriptor(sb, "volume");
+            appendFieldDescriptor(sb, "year");
+        } catch (ReflectiveOperationException ex) {
+            throw new IllegalStateException("Field not found", ex);
         }
-        if (this.annote != null) {
-            sb.append("    annote  = \"").append(this.annote).append("\",\n");
-        }
-        if (this.author != null) {
-            sb.append("    author  = \"").append(this.author).append("\",\n");
-        }
-        if (this.booktitle != null) {
-            sb.append("    booktitle  = \"").append(this.booktitle).append("\",\n");
-        }
-        if (this.chapter != null) {
-            sb.append("    chapter  = \"").append(this.chapter).append("\",\n");
-        }
-        if (this.crossref != null) {
-            sb.append("    crossref  = \"").append(this.crossref).append("\",\n");
-        }
-        if (this.edition != null) {
-            sb.append("    edition  = \"").append(this.edition).append("\",\n");
-        }
-        if (this.editor != null) {
-            sb.append("    editor  = \"").append(this.editor).append("\",\n");
-        }
-        if (this.howpublished != null) {
-            sb.append("    howpublished  = \"").append(this.howpublished).append("\",\n");
-        }
-        if (this.institution != null) {
-            sb.append("    institution  = \"").append(this.institution).append("\",\n");
-        }
-        if (this.journal != null) {
-            sb.append("    journal  = \"").append(this.journal).append("\",\n");
-        }
-        if (this.key != null) {
-            sb.append("    key  = \"").append(this.key).append("\",\n");
-        }
-        if (this.month != null) {
-            sb.append("    month  = \"").append(this.month).append("\",\n");
-        }
-        if (this.note != null) {
-            sb.append("    note  = \"").append(this.note).append("\",\n");
-        }
-        if (this.number != null) {
-            sb.append("    number  = \"").append(this.number).append("\",\n");
-        }
-        if (this.pages != null) {
-            sb.append("    pages  = \"").append(this.pages).append("\",\n");
-        }
-        if (this.publisher != null) {
-            sb.append("    publisher  = \"").append(this.publisher).append("\",\n");
-        }
-        if (this.school != null) {
-            sb.append("    school  = \"").append(this.school).append("\",\n");
-        }
-        if (this.series != null) {
-            sb.append("    series  = \"").append(this.series).append("\",\n");
-        }
-        if (this.title != null) {
-            StringBuilder append = sb.append("    title  = \"").append(this.title).append("\",\n");
-        }
-        if (this.type != null) {
-            sb.append("    type  = \"").append(this.type).append("\",\n");
-        }
-        if (this.volume != null) {
-            sb.append("    volume  = \"").append(this.volume).append("\",\n");
-        }
-        if (this.year != null) {
-            sb.append("    year  = \"").append(this.year).append("\",\n");
-        }
+        
         sb.append("}\n");
         return sb.toString();
     }
